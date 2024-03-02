@@ -1,8 +1,11 @@
 import { Text } from "react-native"
 
-const Home = () => {
+const Home = ({brewerys}) => {
   return (
-    <Text>LOADING BEER...</Text>
+    <>
+      <Text>Home</Text>
+      <Text>{brewerys[0].name}</Text>
+    </>
   )
 }
 
