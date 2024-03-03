@@ -1,13 +1,16 @@
-import { View, StyleSheet, Text, StatusBar} from "react-native"
+import { View, StyleSheet, Text, StatusBar, FlatList} from "react-native"
 import { useState,useEffect } from "react"
 import apiHandler from "../services/apiHandler"
 
 import Loading from "../Components/Loading"
 import Error from "../Components/Error"
+import BeerItem from "../Components/BeerItem"
+import Search from "../Components/Search"
 
 const Home = ({brewerys, updateBrewerys}) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [searchOption, setSearchOption] = useState("name")
 
   useEffect(()=>{
     const getBrewerys = async () => {
@@ -24,11 +27,34 @@ const Home = ({brewerys, updateBrewerys}) => {
     getBrewerys()
   },[])
 
+  const renderItem = ({ item }) => {
+    return <BeerItem testID="beer-item" beer={item} onPressHandler={()=>{console.log(item.name)}}/>
+  }
+
   const showContent = () =>{
-    return <Text>Home</Text>
+    return (
+      <>
+        <View>
+          <Search
+            updateSearch={(element)=>{ console.log(element)}}
+            searchOption={searchOption}
+            updateOption={setSearchOption}>
+          </Search>
+        </View>
+        {brewerys.length > 0
+        ? <FlatList
+            testID="beer-list"
+            data={brewerys}
+            renderItem={renderItem}>
+            keyExtractor={item => item.id}
+          </FlatList>
+        : <Text>No Results</Text>
+        }
+      </>
+    )
   }
  
-    return (
+  return (
     <View style={styles.container}>
       {loading
         ? <Loading></Loading>

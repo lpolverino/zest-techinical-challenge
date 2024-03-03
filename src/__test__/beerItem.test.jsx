@@ -46,17 +46,14 @@ describe("beerItem Component tests", () =>{
 
     it("should not render if the name is undefined", () => {
       renderBeerItemAndAssertThatNameAndCityAreNotDisplayed({...mockBeer, name:undefined});
-
     });
 
     it("should not render if there is no name but there is a city", () => {
       renderBeerItemAndAssertThatNameAndCityAreNotDisplayed({...mockBeer, name:''});
-
     });
 
     it("should not render if there is no city but there is the name", () => {
       renderBeerItemAndAssertThatNameAndCityAreNotDisplayed({...mockBeer, city:''});
-
     });
 
   });
@@ -73,7 +70,7 @@ describe("beerItem Component tests", () =>{
 
     })
 
-    it.only("When not rendering the beer the handler cannot be called", () => {
+    it("When not rendering the beer the handler cannot be called", () => {
       const mockHandler = jest.fn()
 
       renderBeerItem(undefined, mockHandler)
