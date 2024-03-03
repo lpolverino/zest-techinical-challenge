@@ -6,11 +6,14 @@ import Loading from "../Components/Loading"
 import ErrorDisplayer from "../Components/ErrorDisplayer"
 import BeerItem from "../Components/BeerItem"
 import Search from "../Components/Search"
+import { useNavigation } from "@react-navigation/native"
 
 const Home = ({brewerys, updateBrewerys}) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [searchOption, setSearchOption] = useState("name")
+
+  const navigation = useNavigation()
 
   useEffect(()=>{
     const getBrewerys = async () => {
@@ -28,7 +31,14 @@ const Home = ({brewerys, updateBrewerys}) => {
   },[])
 
   const renderItem = ({ item }) => {
-    return <BeerItem testID="beer-item" beer={item} onPressHandler={()=>{console.log(item.name)}}/>
+    console.log(item);
+    return <BeerItem
+      testID="beer-item"
+      beer={item}
+      onPressHandler={()=>{navigation.navigate('Info',{ 
+        beer: item
+      })}}
+    />
   }
 
   const showContent = () =>{

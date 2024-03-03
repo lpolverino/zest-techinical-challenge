@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react"
-import { Text, View } from "react-native"
+import { Text, View} from "react-native"
 import apiHandler from "../services/apiHandler"
 import Loading from "../Components/Loading"
 import ErrorDisplayer from "../Components/ErrorDisplayer"
 
-const BeerInfo = ({route, navigation ,beer}) => {
-  
+const BeerInfo = ({route, navigation }) => {
+
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [fetchedBeer, setFetchedBeer] = useState(null)
-
+  
   useEffect(()=>{
     const getBeer = async () =>{
       try{
-        if(!route) throw new Error("Beer not found")
         const beerinfo = await apiHandler.requestById(route.params.id)
         setFetchedBeer(beerinfo)        
       }catch(e){
@@ -24,9 +23,12 @@ const BeerInfo = ({route, navigation ,beer}) => {
       }
     }
     
-    if(!beer){
+    if(!route) return setError("Beer not found")
+    
+    if(!route.params.beer){
       getBeer()
     } else{
+      setFetchedBeer(route.params.beer)
       setLoading(false)
     } 
 
@@ -49,19 +51,13 @@ const BeerInfo = ({route, navigation ,beer}) => {
     )
   }
 
-  const showContent = () => {
-    return beer  
-      ? showInfo(beer)
-      : showInfo(fetchedBeer)
-    }
-
   return (
     <View>
     {error 
       ? <ErrorDisplayer errorMessage={error}></ErrorDisplayer>
       : (loading 
         ? <Loading></Loading>
-        : showContent())
+        : showInfo(fetchedBeer))
     }
     </View>
   )

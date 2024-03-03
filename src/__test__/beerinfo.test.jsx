@@ -25,12 +25,12 @@ describe("BeerInfo screen component Test", () => {
     }
 
     it("render beer when passed as a prop", () => {
-      render(<BeerInfo beer={mockBeer}> </BeerInfo>)
+      render(<BeerInfo route={{params:{beer:mockBeer}}}> </BeerInfo>)
       assertCorrectInfoIsDisplayed();
     });
 
     it("undefined values should display with message", () =>{
-      render(<BeerInfo beer={{...mockBeer, street:undefined}}> </BeerInfo>)
+      render(<BeerInfo route={{params:{beer:{...mockBeer, street:undefined}}}}> </BeerInfo>)
       expect(screen.getByTestId("name")).toBeDefined()
       expect(screen.queryAllByTestId("street")).toHaveLength(0)
     })
@@ -41,7 +41,7 @@ describe("BeerInfo screen component Test", () => {
           return mockBeer
         }
       )
-      render(<BeerInfo beer={undefined} route={{params:{id:"1234567890"}}}/>)
+      render(<BeerInfo route={{params:{id:"1234567890"}}}/>)
       await waitForElementToBeRemoved(() => screen.getByText("Loading Beer.."))
       assertCorrectInfoIsDisplayed();
     })
@@ -55,7 +55,7 @@ describe("BeerInfo screen component Test", () => {
         }
       );
       
-      render(<BeerInfo beer={undefined} route={{params:{id:"1234567890"}}}></BeerInfo>)
+      render(<BeerInfo route={{params:{id:"1234567890"}}}></BeerInfo>)
       await waitForElementToBeRemoved(() => screen.getByText("Loading Beer.."))
       await waitFor(() =>  expect(screen.getByText(errorMessage)).toBeDefined())
     })
