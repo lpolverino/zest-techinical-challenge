@@ -3,7 +3,7 @@ import { useState,useEffect } from "react"
 import apiHandler from "../services/apiHandler"
 
 import Loading from "../Components/Loading"
-import Error from "../Components/Error"
+import ErrorDisplayer from "../Components/ErrorDisplayer"
 import BeerItem from "../Components/BeerItem"
 import Search from "../Components/Search"
 
@@ -60,7 +60,7 @@ const Home = ({brewerys, updateBrewerys}) => {
         ? <Loading></Loading>
         : !error && showContent()
       }
-      {error && <Error errorMessage={error}></Error>}
+      {error && <ErrorDisplayer errorMessage={error}></ErrorDisplayer>}
       <StatusBar style="auto" />
     </View>
   );

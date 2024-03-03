@@ -1,8 +1,6 @@
 import { Text, View } from "react-native"
 
-const Error = ({errorMessage}) => {
-  console.log(errorMessage);
-
+const ErrorDisplayer = ({errorMessage}) => {
   return (
     <View>  
       <Text> Something Happend </Text>
@@ -11,4 +9,4 @@ const Error = ({errorMessage}) => {
   )
 }
 
-export default Error
+export default ErrorDisplayer

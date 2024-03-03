@@ -2,32 +2,27 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Home from "../Screens/Home"
 import Favorites from '../Screens/Favorites'
 
-const Tab = createBottomTabNavigator()
 
 const Tabs = ({brewerys, updateBrewerys}) => {
+  const Tab = createBottomTabNavigator()
   return (
+
     <Tab.Navigator
+      initialRouteName='Search'
       screenOptions={{
         tabBarActiveTintColor: 'black',
         tabBarInactiveTintColor: 'gray',
         tabBarStyle: {
           backgroundColor: 'lightblue'
         },
-        headerStyle: {
-          backgroundColor: 'lightblue'
-        },
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: 25,
-          color: 'black'
-        }
+        headerShown:false,
       }}>
         <Tab.Screen
-          name="Home"
+          name="Search"
           options={{
 
           }}
-        >
+          >
           {()=><Home brewerys={brewerys} updateBrewerys={updateBrewerys}></Home>}
         </Tab.Screen>
         <Tab.Screen

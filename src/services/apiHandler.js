@@ -15,13 +15,13 @@ const apiHandler = () => {
     }
   }
 
-  const requestOneByName = () => {
+  const requestById = (id)=> {
 
   }
 
   return {
     requestAll,
-    requestOneByName,
+    requestById,
   }
 }
 
