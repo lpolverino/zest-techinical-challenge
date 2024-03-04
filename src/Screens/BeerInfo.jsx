@@ -4,7 +4,7 @@ import apiHandler from "../services/apiHandler"
 import Loading from "../Components/Loading"
 import ErrorDisplayer from "../Components/ErrorDisplayer"
 
-const BeerInfo = ({route, navigation }) => {
+const BeerInfo = ({route})=> {
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)

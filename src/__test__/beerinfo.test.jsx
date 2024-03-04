@@ -1,4 +1,4 @@
-import { render, screen, waitForElementToBeRemoved,act, waitFor } from "@testing-library/react-native";
+import { render, screen, waitForElementToBeRemoved, waitFor } from "@testing-library/react-native";
 import BeerInfo from "../Screens/BeerInfo";
 import {mockData} from "./__mock__/brewerys"
 import apiHandler from "../services/apiHandler";

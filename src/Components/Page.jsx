@@ -1,24 +1,25 @@
 import { View, StyleSheet, Text, StatusBar, FlatList} from "react-native"
 import { useState,useEffect } from "react"
-import apiHandler from "../services/apiHandler"
+import Loading from "./Loading"
+import ErrorDisplayer from "./ErrorDisplayer"
+import BeerItem from "./BeerItem"
+import Search from "./Search"
 
-import Loading from "../Components/Loading"
-import ErrorDisplayer from "../Components/ErrorDisplayer"
-import BeerItem from "../Components/BeerItem"
-import Search from "../Components/Search"
-import { useNavigation } from "@react-navigation/native"
-
-const Home = ({brewerys, updateBrewerys}) => {
+const Page = ({
+  brewerys,
+  updateBrewerys,
+  fetchBrewerysApi,
+  updateFilters,
+  beerInfoHandler,
+}) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [searchOption, setSearchOption] = useState("name")
 
-  const navigation = useNavigation()
-
   useEffect(()=>{
     const getBrewerys = async () => {
       try{
-        const allBrewerys = await apiHandler.requestAll()
+        const allBrewerys = await fetchBrewerysApi.getAll()
         updateBrewerys(allBrewerys)
       } catch (e){
         console.log(e);
@@ -34,9 +35,7 @@ const Home = ({brewerys, updateBrewerys}) => {
     return <BeerItem
       testID="beer-item"
       beer={item}
-      onPressHandler={()=>{navigation.navigate('Info',{ 
-        beer: item
-      })}}
+      onPressHandler={()=>beerInfoHandler(item)}
     />
   }
 
@@ -45,7 +44,7 @@ const Home = ({brewerys, updateBrewerys}) => {
       <>
         <View>
           <Search
-            updateSearch={(element)=>{ console.log(element)}}
+            updateSearch={(element)=> updateFilters(element,searchOption)}
             searchOption={searchOption}
             updateOption={setSearchOption}>
           </Search>
@@ -83,6 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
-
-export default Home
+export default Page
