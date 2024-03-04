@@ -9,19 +9,28 @@ const apiHandler = () => {
   }
   
   const requestAll = () => {
-    console.log(mockData);
     if(mockData){
       return mockData
     }
   }
 
   const requestById = (id)=> {
+    return id
+  }
 
+  const getAllByName = (name) => {
+    return name
+  }
+
+  const getAllByCity = (city) => {
+    return city
   }
 
   return {
     requestAll,
     requestById,
+    getAllByName,
+    getAllByCity,
   }
 }
 

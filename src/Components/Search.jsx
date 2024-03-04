@@ -7,10 +7,7 @@ const Search = ({updateSearch, searchOption, updateOption}) => {
 
   const handleTextChange = (newText) => {
     setSearchValue(newText)
-    updateSearch({
-      type:searchOption,
-      search:newText
-    })
+    updateSearch(newText)
   }
 
   const debounceSearch = useMemo(() =>{

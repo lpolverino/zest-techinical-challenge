@@ -15,6 +15,17 @@ const Page = ({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [searchOption, setSearchOption] = useState("name")
+  const [filter, setFilter] = useState('')
+
+  if(fetchBrewerysApi.getAll === undefined) {
+    console.log({
+      brewerys,
+      updateBrewerys,
+      fetchBrewerysApi,
+      updateFilters,
+      beerInfoHandler
+    });
+  }
 
   useEffect(()=>{
     const getBrewerys = async () => {
@@ -28,8 +39,13 @@ const Page = ({
         setLoading(false)
       }
     }
-    getBrewerys()
+    if (brewerys && brewerys.length === 0) getBrewerys()
+    else setLoading(false)
   },[])
+
+  useEffect(()=>{
+    updateFilters(filter, searchOption)
+  },[filter,searchOption])
 
   const renderItem = ({ item }) => {
     return <BeerItem
@@ -44,7 +60,7 @@ const Page = ({
       <>
         <View>
           <Search
-            updateSearch={(element)=> updateFilters(element,searchOption)}
+            updateSearch={(element)=> setFilter(element)}
             searchOption={searchOption}
             updateOption={setSearchOption}>
           </Search>

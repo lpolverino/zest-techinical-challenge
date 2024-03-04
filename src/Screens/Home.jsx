@@ -1,78 +1,32 @@
-import { View, StyleSheet, Text, StatusBar, FlatList} from "react-native"
-import { useState,useEffect } from "react"
-import apiHandler from "../services/apiHandler"
-
-import Loading from "../Components/Loading"
-import ErrorDisplayer from "../Components/ErrorDisplayer"
-import BeerItem from "../Components/BeerItem"
-import Search from "../Components/Search"
+import { View, StyleSheet } from "react-native"
 import { useNavigation } from "@react-navigation/native"
+import Page from "../Components/Page"
 
-const Home = ({brewerys, updateBrewerys}) => {
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [searchOption, setSearchOption] = useState("name")
-
+const Home = ({brewerys, updateBrewerys, apiHandlers}) => {
+  
   const navigation = useNavigation()
 
-  useEffect(()=>{
-    const getBrewerys = async () => {
-      try{
-        const allBrewerys = await apiHandler.requestAll()
-        updateBrewerys(allBrewerys)
-      } catch (e){
-        console.log(e);
-        setError(e.message)
-      }finally{
-        setLoading(false)
-      }
-    }
-    getBrewerys()
-  },[])
-
-  const renderItem = ({ item }) => {
-    return <BeerItem
-      testID="beer-item"
-      beer={item}
-      onPressHandler={()=>{navigation.navigate('Info',{ 
-        beer: item
-      })}}
-    />
+  const filterBrewerys = async (search, type) =>{
+    if (search === '') 
+      return await apiHandlers.getAll()
+    const newBrewwerys = type === "name"
+      ? apiHandlers.getAllByName(search)
+      : apiHandlers.getAllByCity(search)
+    
+    updateBrewerys(newBrewwerys)
   }
 
-  const showContent = () =>{
-    return (
-      <>
-        <View>
-          <Search
-            updateSearch={(element)=>{ console.log(element)}}
-            searchOption={searchOption}
-            updateOption={setSearchOption}>
-          </Search>
-        </View>
-        {brewerys.length > 0
-        ? <FlatList
-            testID="beer-list"
-            data={brewerys}
-            renderItem={renderItem}>
-            keyExtractor={item => item.id}
-          </FlatList>
-        : <Text>No Results</Text>
-        }
-      </>
-    )
-  }
- 
   return (
     <View style={styles.container}>
-      {loading
-        ? <Loading></Loading>
-        : !error && showContent()
-      }
-      {error && <ErrorDisplayer errorMessage={error}></ErrorDisplayer>}
-      <StatusBar style="auto" />
+      <Page
+      brewerys={brewerys}
+      updateBrewerys={updateBrewerys}
+      fetchBrewerysApi={apiHandlers}
+      updateFilters={filterBrewerys}
+      beerInfoHandler={(item)=>navigation.navigate('Info',{id:item.id})}>
+      </Page>
     </View>
-  );
+  )
 }
 const styles = StyleSheet.create({
   container: {

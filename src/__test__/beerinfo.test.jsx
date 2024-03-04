@@ -8,6 +8,7 @@ const delay = utils.delay
 const mockBeer = mockData[0]
 
 jest.mock("../services/apiHandler")
+jest.mock("../services/deviceStorage")
 
 describe("BeerInfo screen component Test", () => {
   describe("render tests", () =>{
@@ -22,7 +23,7 @@ describe("BeerInfo screen component Test", () => {
       expect(screen.getByText(mockBeer.phone)).toBeDefined();
       expect(screen.getByText(mockBeer.website_url)).toBeDefined();
       expect(screen.getByText(mockBeer.street)).toBeDefined();
-    }
+    };
 
     it("render beer when passed as a prop", () => {
       render(<BeerInfo route={{params:{beer:mockBeer}}}> </BeerInfo>)
@@ -33,7 +34,7 @@ describe("BeerInfo screen component Test", () => {
       render(<BeerInfo route={{params:{beer:{...mockBeer, street:undefined}}}}> </BeerInfo>)
       expect(screen.getByTestId("name")).toBeDefined()
       expect(screen.queryAllByTestId("street")).toHaveLength(0)
-    })
+    });
 
     it("when beer not provided should use the route params for fetching the beer info", async() => {
       apiHandler.requestById.mockImplementation(
@@ -44,7 +45,7 @@ describe("BeerInfo screen component Test", () => {
       render(<BeerInfo route={{params:{id:"1234567890"}}}/>)
       await waitForElementToBeRemoved(() => screen.getByText("Loading Beer.."))
       assertCorrectInfoIsDisplayed();
-    })
+    });
 
     it("WHen fetch fails should render error message", async () => {
       const errorMessage = 'Error handling the request'
@@ -58,12 +59,11 @@ describe("BeerInfo screen component Test", () => {
       render(<BeerInfo route={{params:{id:"1234567890"}}}></BeerInfo>)
       await waitForElementToBeRemoved(() => screen.getByText("Loading Beer.."))
       await waitFor(() =>  expect(screen.getByText(errorMessage)).toBeDefined())
-    })
+    });
 
     it("WHen both props are unsuficient, should display Error", async () => {
       render(<BeerInfo></BeerInfo>)
-      screen.debug();
       await waitFor(() => expect(screen.getByText("Beer not found")).toBeDefined())
+    });
   });
-});
 });

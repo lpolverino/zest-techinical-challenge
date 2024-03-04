@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react"
-import { Text, View} from "react-native"
+import { Button, Text, View} from "react-native"
 import apiHandler from "../services/apiHandler"
 import Loading from "../Components/Loading"
 import ErrorDisplayer from "../Components/ErrorDisplayer"
 
-const BeerInfo = ({route})=> {
+const BeerInfo = ({route,
+    isInFavorites,
+    addFavorite,
+    deleteFavorite,
+    getBrewery})=> {
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [fetchedBeer, setFetchedBeer] = useState(null)
+  const [isFavorite, setIsFavorite] = useState(false)
   
   useEffect(()=>{
     const getBeer = async () =>{
@@ -18,21 +23,56 @@ const BeerInfo = ({route})=> {
       }catch(e){
         console.log(e);
         setError(e.message)
-      }finally{
+      }
+      finally{
         setLoading(false)
       }
     }
     
     if(!route) return setError("Beer not found")
     
-    if(!route.params.beer){
+    const cachedBrewery = getBrewery(route.params.id)
+    if(!cachedBrewery)
       getBeer()
-    } else{
-      setFetchedBeer(route.params.beer)
-      setLoading(false)
-    } 
-
+    else
+      setFetchedBeer(cachedBrewery)
+    setLoading(false)
   }, [])
+
+  useEffect(()=>{
+    const assertFavorite = async () =>{
+      if( fetchedBeer ){
+        try{
+          const isFavorite = await isInFavorites(fetchedBeer.id)
+          setIsFavorite(isFavorite)
+        }catch(e){
+          console.log(e);
+          setError(e.message)
+        }finally{
+          setLoading(false)
+        }
+      }
+    }
+    fetchedBeer && assertFavorite()
+  },[fetchedBeer])
+
+
+  const favoriteHandler = async () => {
+    try{
+      if(isFavorite)
+        await deleteFavorite(fetchedBeer.id)
+      else
+        await addFavorite({
+          id:fetchedBeer.id,
+          name:fetchedBeer.name,
+          city: fetchedBeer.city,
+        })
+      }catch(e){
+        console.log(e);
+        setError(e.message)
+      }
+      setIsFavorite(prevState => !prevState)
+  }
 
   const showInfo = (beerInfo) => {
     return (
@@ -46,8 +86,15 @@ const BeerInfo = ({route})=> {
       {beerInfo.postal_code && <Text testID="postal_code">{beerInfo.postal_code}</Text>}
       {beerInfo.phone && <Text testID="phone">{beerInfo.phone}</Text>}
       {beerInfo.website_url && <Text testID="website_url">{beerInfo.website_url}</Text>}
+      {beerInfo.name 
+        && <Button
+            title={isFavorite ? "Remove from Favorites": "Add to Favorites"}
+            onPress={async () => {
+              favoriteHandler()
+            }}>
+          </Button>
+      }
     </View>
-
     )
   }
 
@@ -61,7 +108,6 @@ const BeerInfo = ({route})=> {
     }
     </View>
   )
-
 }
 
 export default BeerInfo
