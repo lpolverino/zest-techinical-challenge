@@ -35,7 +35,9 @@ export default function App() {
   }
 
   const fetchApi = {
-    getAll: apiHandler.requestAll
+    getAll: apiHandler.requestAll,
+    getAllByName: apiHandler.getAllByName,
+    getAllByCity: apiHandler.getAllByCity,
   }
 
   const deviceApi = {

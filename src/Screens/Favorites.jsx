@@ -18,17 +18,23 @@ const Favorites = ({favorites, updateFavorites, apiHandlers}) => {
   const updateFilters = async (search, type) => {
     if( type !== "name" && type !== "city") throw new Error("Bad parameters")
     else {
-      if( typeof search === 'string') {
-        const allFavorites = await apiHandlers.getAll()
+    if( typeof search === 'string') {
+        const allFavorites = await apiHandlers.getAll();
         if(search === ''){
-          updateFavorites(allFavorites)
+         updateFavorites(allFavorites.data)
         }
-        else 
-          updateFavorites(filterBrewerys(allFavorites,search,type))
+        else {
+          const filtered = filterBrewerys(allFavorites.data,search,type)
+          updateFavorites(filtered)
+        }
       }
-    }   
+    }
+    return 1   
   }
+  
+  const passPage = () => {
 
+  }
 
 
   return (

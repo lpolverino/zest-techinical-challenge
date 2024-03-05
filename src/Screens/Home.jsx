@@ -7,13 +7,32 @@ const Home = ({brewerys, updateBrewerys, apiHandlers}) => {
   const navigation = useNavigation()
 
   const filterBrewerys = async (search, type) =>{
-    if (search === '') 
-      return await apiHandlers.getAll()
-    const newBrewwerys = type === "name"
-      ? apiHandlers.getAllByName(search)
-      : apiHandlers.getAllByCity(search)
+    let newBrewerys 
+    if (search === ''){
+      newBrewerys =  await apiHandlers.getAll(1)
+    } else{
+      newBrewerys = type === "name"
+        ? await apiHandlers.getAllByName(search,1)
+        : await apiHandlers.getAllByCity(search,1)
+    }
     
-    updateBrewerys(newBrewwerys)
+    updateBrewerys(newBrewerys.data)
+    return newBrewerys.metaData.total
+    
+  }
+
+  const passPage = async (search, type, pageNumber) => {
+    
+    let newBrewerys 
+    if(search === '')
+      newBrewerys =  await apiHandlers.getAll(pageNumber)
+    else {
+      newBrewerys = type === "name"
+        ? apiHandlers.getAllByName(search, pageNumber)
+        : apiHandlers.getAllByCity(search, pageNumber)
+    }
+    updateBrewerys(newBrewerys.data)
+    return newBrewerys.metaData.total
   }
 
   return (

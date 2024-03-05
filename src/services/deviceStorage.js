@@ -1,12 +1,21 @@
 import AsyncStorate from "@react-native-async-storage/async-storage"
+import utils from "./utils"
 
 const namespace = "favoriteBrewerys"
 
 const storage = () =>{
+
+  const pageOffset = utils.pageOffset
   
   const getFavorites = async () =>{
     const favorties = await AsyncStorate.getItem(`${namespace}:favorites`);
-    return favorties ? JSON.parse(favorties) : [];
+    const favoritesParsed = favorties ? JSON.parse(favorties) : [];
+    return {
+      data:favoritesParsed,
+       metadata:{
+        total:1
+      }
+    }
   }
   
   const saveFavorites = async (favorites) => {
@@ -17,17 +26,15 @@ const storage = () =>{
   }
 
   const addFavorite = async (brewery) => {
-    
-    const validateProduct = (brewery) => {
-      
-      const validatePropertie = (breweryPropertie) => {
-        return breweryPropertie && typeof breweryPropertie === String
-      }
 
+    const validateProduct = (brewery) => {
+      const validatePropertie = (breweryPropertie) => {
+        return breweryPropertie && typeof breweryPropertie === 'string'
+      }
       if(!brewery 
-        || validatePropertie(brewery.id)
-        || validatePropertie(brewery.name)
-        || validatePropertie(brewery.city)
+        || !validatePropertie(brewery.id)
+        || !validatePropertie(brewery.name)
+        || !validatePropertie(brewery.city)
         ) return false
       
       return true
@@ -35,8 +42,8 @@ const storage = () =>{
 
     if(!validateProduct(brewery)) throw new Error("Invalid brewery")
    
-    const currentFavorites = await getFavorites()
-    const newFavorites = [...currentFavorites, brewery]
+    const currentFavorites = await getFavorites(-1)
+    const newFavorites = [...currentFavorites.data, brewery]
   
     await saveFavorites(newFavorites)
 
@@ -46,8 +53,9 @@ const storage = () =>{
 
   const isInFavorites = async (breweryId) => {
    try {
-    const favorites = await getFavorites()
-    const filterResults = favorites.filter(brewery => brewery.id === breweryId)
+    const favorites = await getFavorites(-1)
+
+    const filterResults = favorites.data.filter(brewery => brewery.id === breweryId)
     return filterResults.length > 0 
     }catch (e){
       throw new Error("Error handling the storage")
@@ -55,8 +63,8 @@ const storage = () =>{
   }
 
   const deleteFavorite = async (breweryId) => {
-    const currentFavorites = await getFavorites();
-    const newFavorites = currentFavorites.filter(brewery => brewery.id !== breweryId)
+    const currentFavorites = await getFavorites(-1);
+    const newFavorites = currentFavorites.data.filter(brewery => brewery.id !== breweryId)
   
     await saveFavorites(newFavorites)
 

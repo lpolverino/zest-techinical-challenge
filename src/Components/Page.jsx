@@ -4,6 +4,7 @@ import Loading from "./Loading"
 import ErrorDisplayer from "./ErrorDisplayer"
 import BeerItem from "./BeerItem"
 import Search from "./Search"
+import utils from "../services/utils"
 
 const Page = ({
   brewerys,
@@ -16,22 +17,14 @@ const Page = ({
   const [error, setError] = useState(null)
   const [searchOption, setSearchOption] = useState("name")
   const [filter, setFilter] = useState('')
-
-  if(fetchBrewerysApi.getAll === undefined) {
-    console.log({
-      brewerys,
-      updateBrewerys,
-      fetchBrewerysApi,
-      updateFilters,
-      beerInfoHandler
-    });
-  }
+  const [currentPage, setCurrentPage] = useState(1)
+  const [lastPage, setLastPage] = useState(1)
 
   useEffect(()=>{
     const getBrewerys = async () => {
       try{
-        const allBrewerys = await fetchBrewerysApi.getAll()
-        updateBrewerys(allBrewerys)
+        const allBrewerys = await fetchBrewerysApi.getAll(currentPage)
+        updateBrewerys(allBrewerys.data)
       } catch (e){
         console.log(e);
         setError(e.message)
@@ -44,7 +37,12 @@ const Page = ({
   },[])
 
   useEffect(()=>{
-    updateFilters(filter, searchOption)
+    const applyFilter = async () => {
+      setCurrentPage(1)
+      const newtotal = await updateFilters(filter, searchOption)
+      setLastPage( utils.getLastPage(newtotal))
+    }
+    applyFilter()
   },[filter,searchOption])
 
   const renderItem = ({ item }) => {
@@ -54,6 +52,7 @@ const Page = ({
       onPressHandler={()=>beerInfoHandler(item)}
     />
   }
+  const pages = Array.from({length:lastPage}, (value, index) => index+1)
 
   const showContent = () =>{
     return (
@@ -65,6 +64,8 @@ const Page = ({
             updateOption={setSearchOption}>
           </Search>
         </View>
+        <Text>{currentPage}</Text>
+        <Text>{lastPage}</Text>
         {brewerys.length > 0
         ? <FlatList
             testID="beer-list"
