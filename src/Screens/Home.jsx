@@ -42,6 +42,7 @@ const Home = ({brewerys, updateBrewerys, apiHandlers}) => {
       updateBrewerys={updateBrewerys}
       fetchBrewerysApi={apiHandlers}
       updateFilters={filterBrewerys}
+      passPage = {passPage}
       beerInfoHandler={(item)=>navigation.navigate('Info',{id:item.id})}>
       </Page>
     </View>

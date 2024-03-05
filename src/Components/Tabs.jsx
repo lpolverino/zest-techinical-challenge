@@ -28,12 +28,22 @@ const Tabs = ({
           options={{
 
           }}
-          >
-          {()=><Home brewerys={brewerys} updateBrewerys={updateBrewerys} apiHandlers={fetchHandler}></Home>}
+        >
+        {() =><Home 
+            brewerys={brewerys}
+            updateBrewerys={updateBrewerys}
+            apiHandlers={fetchHandler}>
+          </Home>
+        }
         </Tab.Screen>
         <Tab.Screen
-        name='Favorites'>
-          {()=><Favorites favorites ={favorites} updateFavorites={updateFavorites} apiHandlers={devideHandler}></Favorites>}
+          name='Favorites'>
+        {()=><Favorites
+            favorites ={favorites} 
+            updateFavorites={updateFavorites} 
+            apiHandlers={devideHandler}>
+          </Favorites>
+        }
         </Tab.Screen>
     </Tab.Navigator>
   )

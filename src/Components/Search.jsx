@@ -11,7 +11,7 @@ const Search = ({updateSearch, searchOption, updateOption}) => {
   }
 
   const debounceSearch = useMemo(() =>{
-    return debounce(handleTextChange, 1000);
+    return debounce(handleTextChange, 100);
   }, [updateSearch]);
 
   const toggleOption = () => {
@@ -32,7 +32,10 @@ const Search = ({updateSearch, searchOption, updateOption}) => {
         <TextInput
         value={searhValue}
         placeholder={searchOption}
-        onChangeText={debounceSearch}
+        onChangeText={(newText) => {
+          setSearchValue(newText)
+          debounceSearch(newText)
+        }}
         testID={searchOption}>
         </TextInput>
       </View>

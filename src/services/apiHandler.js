@@ -1,4 +1,3 @@
-import  {mockData} from "../__test__/__mock__/brewerys";
 import utils from "./utils";
 
 const apiHandler = () => {
@@ -35,8 +34,8 @@ const apiHandler = () => {
     }
   
   
-  const requestAll = async() => {
-    const urlparams = "?" + addPage(1)
+  const requestAll = async(page) => {
+    const urlparams = "?" + addPage(page)
     const data = await requestToBackend(urlparams)
     return data
   }
