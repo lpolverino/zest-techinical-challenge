@@ -3,6 +3,7 @@ import { Button, Text, View} from "react-native"
 import apiHandler from "../services/apiHandler"
 import Loading from "../Components/Loading"
 import ErrorDisplayer from "../Components/ErrorDisplayer"
+import utils from "../services/utils"
 
 const BeerInfo = ({
   route,
@@ -23,8 +24,7 @@ const BeerInfo = ({
         const beerinfo = await apiHandler.requestById(route.params.id)
         setFetchedBeer(beerinfo)        
       }catch(e){
-        console.log(e);
-        setError(e.message)
+        utils.handleError(e,"Could't get Brewery", setError)
       }
       finally{
         setLoading(false)
@@ -48,8 +48,7 @@ const BeerInfo = ({
           const isFavorite = await isInFavorites(fetchedBeer.id)
           setIsFavorite(isFavorite)
         }catch(e){
-          console.log(e);
-          setError(e.message)
+          utils.handleError(e, "Cannot verify if the brewery is in favorites", setError)
         }finally{
           setLoading(false)
         }
@@ -70,8 +69,7 @@ const BeerInfo = ({
           city: fetchedBeer.city,
         })
       }catch(e){
-        console.log(e);
-        setError(e.message)
+        utils.handleError(e, "There was an error trying to save the Brewery", setError)
       }
       setIsFavorite(prevState => !prevState)
   }

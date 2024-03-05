@@ -48,7 +48,7 @@ const storage = () =>{
   }
 
   const isInFavorites = async (breweryId) => {
-   try {
+    try {
     const favorites = await getFavorites(-1)
 
     const filterResults = favorites.data.filter(brewery => brewery.id === breweryId)

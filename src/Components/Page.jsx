@@ -30,8 +30,7 @@ const Page = ({
         const allBrewerys = await fetchBrewerysApi.getAll(currentPage)
         updateBrewerys(allBrewerys.data)
       } catch (e){
-        console.log(e);
-        setError(e.message)
+        utils.handleError(e, "Could't get brewerys", setError)
       }finally{
         setLoading(false)
       }
@@ -42,9 +41,13 @@ const Page = ({
 
   useEffect(()=>{
     const applyFilter = async () => {
-      setCurrentPage(1)
-      const newtotal = await updateFilters(filter, searchOption)
-      setLastPage( utils.getLastPage(newtotal))
+      try{
+        setCurrentPage(1)
+        const newtotal = await updateFilters(filter, searchOption)
+        setLastPage(utils.getLastPage(newtotal))
+      } catch(e){
+        utils.handleError(e, "Could't get brewerys", setError)
+      }
     }
     applyFilter()
   },[filter,searchOption])
@@ -55,8 +58,7 @@ const Page = ({
       try{
         await passPage(filter, searchOption, currentPage)
       }catch(e){
-        console.log(e);
-        setError(e.message);
+        utils.handleError(e, "Could't get brewerys", setError)
       }finally{
         setRefreshing(false)
       }

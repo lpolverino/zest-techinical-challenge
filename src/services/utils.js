@@ -13,10 +13,16 @@ function getLastPage(total){
   return Math.ceil(total / pageOffset)
 }
 
+function handleError(error, errorMessage, setError) {
+  console.log(error);
+  setError(errorMessage)
+}
+
 export default {
   delay,
   parseToUnderscores,
   pageOffset,
-  getLastPage
+  getLastPage,
+  handleError
 }
 
