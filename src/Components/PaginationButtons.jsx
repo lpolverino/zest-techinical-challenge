@@ -25,6 +25,7 @@ const PaginationButtons = ({
       pages.map((page) =>
         <TouchableOpacity
           key={page}
+          testID="page-button"
           onPress={()=>onPressButton(page)}
           style={[
             styles.paginationButtons,

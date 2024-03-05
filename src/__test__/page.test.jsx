@@ -10,7 +10,7 @@ jest.mock("../services/apiHandler")
 
 describe("Home Screen Componen test", () =>{
   
-  describe("Conditional rendering based in the FetchedData status" , () => {
+  describe("Rendering tests" , () => {
     
     const renderAppAndAssertExpectedText = async (apiResponse , expectedText) => {
       apiHandler.requestAll.mockImplementation(apiResponse)
@@ -22,6 +22,8 @@ describe("Home Screen Componen test", () =>{
       expect(screen.getByText(expectedText)).toBeDefined();
     }
     
+    it.todo("If no data provided should fetch it")
+
     it("when fetched the right data should render the home screen", async () => {
       await renderAppAndAssertExpectedText(
         () => {return [{}]},
@@ -51,6 +53,8 @@ describe("Home Screen Componen test", () =>{
       
     });
 
+    it.todo("Always should start in page one")
+
     it("Should display message when there is nothing to see", async () => {
       await renderAppAndAssertExpectedText(
         ()=>{
@@ -59,6 +63,20 @@ describe("Home Screen Componen test", () =>{
         "No Results"
       )
     })
+  });
+
+  describe("Interactivity tests", () => {
+    it.todo("When pressing page button should call correct function and go to page one")
+
+    it.todo("When page handler fails should show error message")
+
+    it.todo("when pressing filter button should change the searchoption and call the handler ang start in page one")
+
+    it.todo("When search has input should call the correct handler")
+
+    it.todo("When filter handler fails should show error message")
+
+    it.todo("WHen filter handler has no results show display empty message")
 
   })
 })

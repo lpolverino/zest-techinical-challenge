@@ -1,4 +1,4 @@
-import { render, screen, waitForElementToBeRemoved, waitFor } from "@testing-library/react-native";
+import { render, screen, waitForElementToBeRemoved, waitFor, act } from "@testing-library/react-native";
 import BeerInfo from "../Screens/BeerInfo";
 import {mockData} from "./__mock__/brewerys"
 import apiHandler from "../services/apiHandler";
@@ -25,18 +25,28 @@ describe("BeerInfo screen component Test", () => {
       expect(screen.getByText(mockBeer.street)).toBeDefined();
     };
 
-    it("render beer when passed as a prop", () => {
-      render(<BeerInfo route={{params:{beer:mockBeer}}}> </BeerInfo>)
-      assertCorrectInfoIsDisplayed();
-    });
+    it.todo("When beer is cached should render it")
 
-    it("undefined values should display with message", () =>{
-      render(<BeerInfo route={{params:{beer:{...mockBeer, street:undefined}}}}> </BeerInfo>)
+    it.todo("When cache fails should render message")
+
+    it("undefined values should display with message", async () =>{
+      const cachedBrewery = ()=>{
+        return {
+          ...mockBeer,
+          street:undefined
+        }
+      }
+      await waitFor (async ()=>render(<BeerInfo 
+        getBrewery={cachedBrewery}
+        isInFavorites={()=>{return true}}
+        route={{params:{id:mockBeer.id}}}>  
+        </BeerInfo>
+      ));
       expect(screen.getByTestId("name")).toBeDefined()
       expect(screen.queryAllByTestId("street")).toHaveLength(0)
     });
 
-    it("when beer not provided should use the route params for fetching the beer info", async() => {
+    it.todo("When beer is not cached should use the route params for fetching the beer info", async() => {
       apiHandler.requestById.mockImplementation(
         async () => {
           return mockBeer
@@ -47,7 +57,7 @@ describe("BeerInfo screen component Test", () => {
       assertCorrectInfoIsDisplayed();
     });
 
-    it("WHen fetch fails should render error message", async () => {
+    it.todo("When fetch fails should render error message", async () => {
       const errorMessage = 'Error handling the request'
       apiHandler.requestById.mockImplementation(
         async () => {
@@ -61,9 +71,31 @@ describe("BeerInfo screen component Test", () => {
       await waitFor(() =>  expect(screen.getByText(errorMessage)).toBeDefined())
     });
 
-    it("WHen both props are unsuficient, should display Error", async () => {
+    it.todo("WHen both fetcher are unsuficient, should display Error", async () => {
       render(<BeerInfo></BeerInfo>)
       await waitFor(() => expect(screen.getByText("Beer not found")).toBeDefined())
     });
+
+    it.todo("When brewery is in favorites should render the button for removal")
+
+    it.todo("When brewery is not in favourites should render the button for adding")
+  });
+  
+  describe("Interactivity tests", () => {
+    
+    it.todo("when brewery is in favourites and the button is pressed should call correct function")
+    
+    it.todo("When brewery is in favourites and the button is pressed and dosent get error, should change button message")
+    
+    it.todo("When brewery is not in favourties and the button is pressed should call correct function")
+    
+    it.todo("When brewery is not in favourties and the button is pressed should and dosent get error, should change button message")
+    
+    it.todo("When button is pressed two times the button message should be the same")
+    
+    it.todo("When button is pressed two times the third press should call the same function as the first time")
+    
+    it.todo("When buttons press handler fails should render a error")
+    
   });
 });

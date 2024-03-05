@@ -52,10 +52,7 @@ describe("Search Component tests", () =>{
       await act(() => fireEvent.changeText(screen.getByTestId("name"), "beername1"));
       await delay(1000)
       expect(mockHandler).toHaveBeenCalled();
-      expect(mockHandler.mock.calls[0][0]).toEqual({
-        type:"name",
-        search:'beername1'
-      });
+      expect(mockHandler.mock.calls[0][0]).toEqual('beername1');
     });
 
     it("When typing in City should call the handler with the correct arguments", async () => {
@@ -64,10 +61,7 @@ describe("Search Component tests", () =>{
       await act( async () => fireEvent.changeText(screen.getByTestId("city"),"cityname1"));
       await delay(1000)
       expect(mockHandler).toHaveBeenCalled();
-      expect(mockHandler.mock.calls[0][0]).toEqual({
-        type:"city",
-        search:"cityname1"
-      });
+      expect(mockHandler.mock.calls[0][0]).toEqual("cityname1");
     })
   });
 });
