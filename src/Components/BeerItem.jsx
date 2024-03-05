@@ -1,6 +1,5 @@
 import {View, Text, TouchableWithoutFeedback} from "react-native"
 
-
 const BeerItem = ({beer, onPressHandler}) => {
   if (!beer || !beer.city || !beer.name || beer.name === '' || beer.city === '') 
     return <Text>Cannot display beer</Text>

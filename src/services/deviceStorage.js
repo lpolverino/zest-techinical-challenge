@@ -1,12 +1,8 @@
 import AsyncStorate from "@react-native-async-storage/async-storage"
-import utils from "./utils"
-
 const namespace = "favoriteBrewerys"
 
 const storage = () =>{
 
-  const pageOffset = utils.pageOffset
-  
   const getFavorites = async () =>{
     const favorties = await AsyncStorate.getItem(`${namespace}:favorites`);
     const favoritesParsed = favorties ? JSON.parse(favorties) : [];

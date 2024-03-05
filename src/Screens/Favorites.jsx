@@ -32,11 +32,6 @@ const Favorites = ({favorites, updateFavorites, apiHandlers}) => {
     return 1   
   }
   
-  const passPage = () => {
-
-  }
-
-
   return (
     <View style={styles.container}>
       <Page

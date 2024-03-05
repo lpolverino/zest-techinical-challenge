@@ -4,11 +4,13 @@ import apiHandler from "../services/apiHandler"
 import Loading from "../Components/Loading"
 import ErrorDisplayer from "../Components/ErrorDisplayer"
 
-const BeerInfo = ({route,
-    isInFavorites,
-    addFavorite,
-    deleteFavorite,
-    getBrewery})=> {
+const BeerInfo = ({
+  route,
+  isInFavorites,
+  addFavorite,
+  deleteFavorite,
+  getBrewery
+  }) => {
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -88,10 +90,10 @@ const BeerInfo = ({route,
       {beerInfo.website_url && <Text testID="website_url">{beerInfo.website_url}</Text>}
       {beerInfo.name 
         && <Button
-            title={isFavorite ? "Remove from Favorites": "Add to Favorites"}
-            onPress={async () => {
-              favoriteHandler()
-            }}>
+              title={isFavorite ? "Remove from Favorites": "Add to Favorites"}
+              onPress={async () => {
+                favoriteHandler()
+              }}>
           </Button>
       }
     </View>

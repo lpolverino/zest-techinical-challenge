@@ -15,9 +15,8 @@ const PaginationButtons = ({
   for(let i = startPage; i<= endPage ; i++){
     pages.push(i)
   }
-  if(current > range + 1){
-    pages.unshift(1)
-  }
+
+  if(current > range + 1) pages.unshift(1)
 
   if(current + range < lastPage) pages.push(lastPage)
 
@@ -25,13 +24,13 @@ const PaginationButtons = ({
     return (
       pages.map((page) =>
         <TouchableOpacity
-        key={page}
-        onPress={()=>onPressButton(page)}
-        style={[
-          styles.paginationButtons,
-          page === current ? styles.activeButton: null
-        ]}>
-          <Text>{page}</Text>
+          key={page}
+          onPress={()=>onPressButton(page)}
+          style={[
+            styles.paginationButtons,
+            page === current ? styles.activeButton: null
+          ]}>
+            <Text>{page}</Text>
         </TouchableOpacity>
       )
     )
@@ -39,7 +38,7 @@ const PaginationButtons = ({
 
   return (
     <>
-    {startPage !== endPage && showBUttons() }
+      {startPage !== endPage && showBUttons() }
     </>
   )
 }
