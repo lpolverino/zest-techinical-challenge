@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { Button, Text, View} from "react-native"
-import apiHandler from "../services/apiHandler"
 import Loading from "../Components/Loading"
 import ErrorDisplayer from "../Components/ErrorDisplayer"
 import utils from "../services/utils"
 
 const BeerInfo = ({
   route,
+  fetchBrewery,
   isInFavorites,
   addFavorite,
   deleteFavorite,
@@ -21,7 +21,7 @@ const BeerInfo = ({
   useEffect(()=>{
     const getBeer = async () =>{
       try{
-        const beerinfo = await apiHandler.requestById(route.params.id)
+        const beerinfo = await fetchBrewery(route.params.id)
         setFetchedBeer(beerinfo)        
       }catch(e){
         utils.handleError(e,"Could't get Brewery", setError)
@@ -38,20 +38,17 @@ const BeerInfo = ({
       getBeer()
     else
       setFetchedBeer(cachedBrewery)
-    setLoading(false)
   }, [])
 
   useEffect(()=>{
     const assertFavorite = async () =>{
-      if( fetchedBeer ){
-        try{
-          const isFavorite = await isInFavorites(fetchedBeer.id)
-          setIsFavorite(isFavorite)
-        }catch(e){
-          utils.handleError(e, "Cannot verify if the brewery is in favorites", setError)
-        }finally{
-          setLoading(false)
-        }
+      try{
+        const isFavorite = await isInFavorites(fetchedBeer.id)
+        setIsFavorite(isFavorite)
+      }catch(e){
+        utils.handleError(e, "Cannot verify if the brewery is in favorites", setError)
+      }finally{
+        setLoading(false)
       }
     }
     fetchedBeer && assertFavorite()
@@ -77,7 +74,7 @@ const BeerInfo = ({
   const showInfo = (beerInfo) => {
     return (
     <View>
-      {beerInfo.name  &&<Text testID="name">{beerInfo.name}</Text>}
+      {beerInfo.name && <Text testID="name">{beerInfo.name}</Text>}
       {beerInfo.brewery_type && <Text testID="brewery_type">{beerInfo.brewery_type}</Text>}
       {beerInfo.street && <Text testID="street">{beerInfo.street}</Text>}
       {beerInfo.city && <Text testID="city">{beerInfo.city}</Text>}

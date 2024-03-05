@@ -5,7 +5,9 @@ const apiHandler = () => {
   const backendUrl = "https://api.openbrewerydb.org/v1/breweries"
   const pageOffsets = utils.pageOffset
 
-  const requestToBackend = async (params) => {
+  const requestToBackend = async (params, meta=true) => {
+
+    const result ={}
     
     const requestUrl = backendUrl + (params?? "" )
     const metaUrl = backendUrl + "/meta" + (params?? "")
@@ -16,16 +18,17 @@ const apiHandler = () => {
       if(!response.ok) {
         throw new Error(`ERROR HANDLING THE REQUEST ${response.status}`)
       }
-      const metaResponse = await fetch(metaUrl);
-      const metaData = await metaResponse.json();
-      if(!metaResponse.ok){
-        throw new Error(`ERROR HANDLING THE REQUEST ${response.status}`)
+      result.data = responseData
+      if(meta){
+        const metaResponse = await fetch(metaUrl);
+        const metaData = await metaResponse.json();
+        if(!metaResponse.ok){
+          throw new Error(`ERROR HANDLING THE REQUEST ${response.status}`)
+        }
+        result.metaData = metaData
       }
 
-      return {
-        data:responseData,
-        metaData
-      }
+      return result
 
     }catch(e){
        console.log(e);
@@ -40,8 +43,14 @@ const apiHandler = () => {
     return data
   }
 
-  const requestById = (id)=> {
-    return id
+  const requestById = async (id)=> {
+    const urlParams = "/"+id
+    try{
+      const responseData = await requestToBackend(urlParams,false)
+      return responseData.data
+    }catch(e){
+      throw new Error(e.message)
+    }
   }
 
   const addPage = (page) =>{

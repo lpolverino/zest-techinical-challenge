@@ -37,6 +37,7 @@ export default function App() {
     getAll: apiHandler.requestAll,
     getAllByName: apiHandler.getAllByName,
     getAllByCity: apiHandler.getAllByCity,
+    getOneById: apiHandler.requestById
   }
 
   const deviceApi = {
@@ -63,6 +64,7 @@ export default function App() {
           <Stack.Screen name='Info'>
             {(props) => <BeerInfo
               {...props}
+              fetchBrewery={tabsApi["BreweryDB"].getOneById}
               isInFavorites={isInFavorites}
               addFavorite={addFavorite}
               deleteFavorite={deleteFavorite}
