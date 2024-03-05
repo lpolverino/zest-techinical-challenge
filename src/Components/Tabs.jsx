@@ -7,9 +7,8 @@ const Tabs = ({
     updateBrewerys,
     favorites,
     updateFavorites,
-    fetchHandler,
-    devideHandler}
-    ) => {
+    tabsApi 
+  }) => {
   const Tab = createBottomTabNavigator()
   return (
 
@@ -32,7 +31,7 @@ const Tabs = ({
         {() =><Home 
             brewerys={brewerys}
             updateBrewerys={updateBrewerys}
-            apiHandlers={fetchHandler}>
+            apiHandlers={tabsApi["BreweryDB"]}>
           </Home>
         }
         </Tab.Screen>
@@ -41,7 +40,7 @@ const Tabs = ({
         {()=><Favorites
             favorites ={favorites} 
             updateFavorites={updateFavorites} 
-            apiHandlers={devideHandler}>
+            apiHandlers={tabsApi["Device"]}>
           </Favorites>
         }
         </Tab.Screen>

@@ -4,7 +4,7 @@ const ErrorDisplayer = ({errorMessage}) => {
   return (
     <View>  
       <Text> Something Happend </Text>
-      <Text>{errorMessage} </Text>
+      <Text>{errorMessage}</Text>
     </View>
   )
 }

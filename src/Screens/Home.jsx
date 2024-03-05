@@ -6,30 +6,14 @@ const Home = ({brewerys, updateBrewerys, apiHandlers}) => {
   
   const navigation = useNavigation()
 
-  const filterBrewerys = async (search, type) =>{
+  const changeBrewerys = async (search, type, page) =>{
     let newBrewerys 
     if (search === ''){
-      newBrewerys =  await apiHandlers.getAll(1)
+      newBrewerys =  await apiHandlers.getAll(page)
     } else{
       newBrewerys = type === "name"
-        ? await apiHandlers.getAllByName(search,1)
-        : await apiHandlers.getAllByCity(search,1)
-    }
-    
-    updateBrewerys(newBrewerys.data)
-    return newBrewerys.metaData.total
-    
-  }
-
-  const passPage = async (search, type, pageNumber) => {
-    
-    let newBrewerys 
-    if(search === '')
-      newBrewerys =  await apiHandlers.getAll(pageNumber)
-    else {
-      newBrewerys = type === "name"
-        ? apiHandlers.getAllByName(search, pageNumber)
-        : apiHandlers.getAllByCity(search, pageNumber)
+        ? await apiHandlers.getAllByName(search,page)
+        : await apiHandlers.getAllByCity(search,page)
     }
     updateBrewerys(newBrewerys.data)
     return newBrewerys.metaData.total
@@ -41,8 +25,8 @@ const Home = ({brewerys, updateBrewerys, apiHandlers}) => {
       brewerys={brewerys}
       updateBrewerys={updateBrewerys}
       fetchBrewerysApi={apiHandlers}
-      updateFilters={filterBrewerys}
-      passPage = {passPage}
+      updateFilters={changeBrewerys}
+      passPage = {changeBrewerys}
       beerInfoHandler={(item)=>navigation.navigate('Info',{id:item.id})}>
       </Page>
     </View>

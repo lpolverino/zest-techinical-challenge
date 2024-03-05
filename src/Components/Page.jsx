@@ -24,46 +24,41 @@ const Page = ({
   const [lastPage, setLastPage] = useState(1)
   const [refreshing, setRefreshing] = useState(false);
 
+  const fetchNewData = async (tryFunction, finallyHanlder) => {
+    try{
+      setRefreshing(true)
+      await tryFunction();
+    } catch(e){
+      utils.handleError(e, "Could't get Brewerys", setError);
+    } finally{
+      finallyHanlder && finallyHanlder();
+      setRefreshing(false);
+    }
+  }
+
   useEffect(()=>{
-    const getBrewerys = async () => {
-      try{
+    if (brewerys && brewerys.length === 0) 
+      fetchNewData( async ()=>{
         const allBrewerys = await fetchBrewerysApi.getAll(currentPage)
         updateBrewerys(allBrewerys.data)
-      } catch (e){
-        utils.handleError(e, "Could't get brewerys", setError)
-      }finally{
+      }, () => {
         setLoading(false)
-      }
-    }
-    if (brewerys && brewerys.length === 0) getBrewerys()
-    else setLoading(false)
+      });
+    else setLoading(false);
   },[])
 
   useEffect(()=>{
-    const applyFilter = async () => {
-      try{
-        setCurrentPage(1)
-        const newtotal = await updateFilters(filter, searchOption)
-        setLastPage(utils.getLastPage(newtotal))
-      } catch(e){
-        utils.handleError(e, "Could't get brewerys", setError)
-      }
-    }
-    applyFilter()
+    updateFilters && fetchNewData(async ()=>{
+      const newTotal = await updateFilters(filter, searchOption, 1)
+      setCurrentPage(1)
+      setLastPage(utils.getLastPage(newTotal))
+    });
   },[filter,searchOption])
 
   useEffect( () => {
-    const fetchNewPage = async () => {
-      setRefreshing(true)
-      try{
-        await passPage(filter, searchOption, currentPage)
-      }catch(e){
-        utils.handleError(e, "Could't get brewerys", setError)
-      }finally{
-        setRefreshing(false)
-      }
-    }
-    passPage && fetchNewPage();
+    passPage && fetchNewData( async () => {
+      await passPage(filter, searchOption, currentPage)
+    });
   }, [currentPage])
 
   const renderItem = ({ item }) => {
@@ -80,14 +75,13 @@ const Page = ({
 
   const handleRefresh = () =>{
     setRefreshing(true)
-    setTimeout(()=>setRefreshing(false),1000)
+    setTimeout( ()=> setRefreshing(false),1000)
   }
 
   const showContent = () =>{
     return (
       <>
       <SafeAreaView>
-
         <View>
           <Search
             updateSearch={(element)=> setFilter(element)}
@@ -149,4 +143,3 @@ const styles = StyleSheet.create({
 });
 
 export default Page
-

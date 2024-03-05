@@ -7,7 +7,6 @@ import apiHandler from './src/services/apiHandler';
 import Tabs from "./src/Components/Tabs"
 import BeerInfo from './src/Screens/BeerInfo';
 
-
 export default function App() {
   const [brewerys, setBrewerys] = useState([])
   const [favorites, setFavorites] = useState([])
@@ -44,6 +43,11 @@ export default function App() {
     getAll: deviceStorage.getFavorites
   }
 
+  const tabsApi = {
+    BreweryDB: fetchApi,
+    Device: deviceApi
+    }
+
     return (
       <NavigationContainer>
         <Stack.Navigator initialRouteName='Home'>
@@ -53,18 +57,17 @@ export default function App() {
               updateBrewerys={setBrewerys}
               favorites={favorites}
               updateFavorites={setFavorites}
-              fetchHandler={fetchApi}
-              devideHandler={deviceApi}>
+              tabsApi= {tabsApi}>
             </Tabs>}
           </Stack.Screen>
           <Stack.Screen name='Info'>
             {(props) => <BeerInfo
-                    {...props}
-                    isInFavorites={isInFavorites}
-                    addFavorite={addFavorite}
-                    deleteFavorite={deleteFavorite}
-                    getBrewery={getBrewery}>
-                  </BeerInfo>}
+              {...props}
+              isInFavorites={isInFavorites}
+              addFavorite={addFavorite}
+              deleteFavorite={deleteFavorite}
+              getBrewery={getBrewery}>
+            </BeerInfo>}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
