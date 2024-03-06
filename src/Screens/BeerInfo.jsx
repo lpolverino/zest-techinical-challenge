@@ -1,8 +1,32 @@
 import { useEffect, useState } from "react"
-import { Button, Text, View} from "react-native"
+import { Pressable, Text, View} from "react-native"
 import Loading from "../Components/Loading"
 import ErrorDisplayer from "../Components/ErrorDisplayer"
 import utils from "../services/utils"
+import { styled } from "nativewind"
+import { FontAwesome } from "@expo/vector-icons"
+import themes from "../../themes"
+
+const StyledText = styled(Text)
+const StyledView = styled(View)
+
+const ContactText = ({text}) =>{
+  return (text && <StyledText
+    className="text-white text-xl text-left m-1"
+    >{text}
+  </StyledText>);
+}
+
+const ContactView = ({contactLabel, contactText, horizontalColor}) => {
+  return <StyledView className="my-4">
+    <ContactText text={contactLabel}> </ContactText>
+    <View style={{
+      borderBottomColor: horizontalColor,
+      borderBottomWidth:6
+    }}></View>
+    <ContactText text={contactText}></ContactText>
+  </StyledView>
+}
 
 const BeerInfo = ({
   route,
@@ -69,41 +93,78 @@ const BeerInfo = ({
         utils.handleError(e, "There was an error trying to save the Brewery", setError)
       }
       setIsFavorite(prevState => !prevState)
-  }
+    }
+    
+    const renderButton = () => {
+      return <Pressable 
+        className="w-10 h-10"
+        onPress={async ()=>favoriteHandler()}>
+          {
+            isFavorite 
+              ?<FontAwesome name="star-o" size={32} color={themes.favStar.color}> </FontAwesome>
+              :<FontAwesome name="star" size={32} color={themes.favStar.color}></FontAwesome>
+          }
+      </Pressable>
+    }
+
+    const renderLocation = (brewery) => {
+      if (!brewery.street || !brewery.city || !brewery.state || !brewery.country)
+        return "cannot get full address"
+
+      return "" + brewery.street + 
+            ", " + brewery.city + 
+            ", " + brewery.state + 
+            ", " + brewery.country + (brewery.postal_code ?` (${brewery.postal_code})`:"")
+    }
 
   const showInfo = (beerInfo) => {
     return (
-    <View>
-      {beerInfo.name && <Text testID="name">{beerInfo.name}</Text>}
-      {beerInfo.brewery_type && <Text testID="brewery_type">{beerInfo.brewery_type}</Text>}
-      {beerInfo.street && <Text testID="street">{beerInfo.street}</Text>}
-      {beerInfo.city && <Text testID="city">{beerInfo.city}</Text>}
-      {beerInfo.state && <Text testID="state">{beerInfo.state}</Text>}
-      {beerInfo.country && <Text testID="country">{beerInfo.country}</Text>}
-      {beerInfo.postal_code && <Text testID="postal_code">{beerInfo.postal_code}</Text>}
-      {beerInfo.phone && <Text testID="phone">{beerInfo.phone}</Text>}
-      {beerInfo.website_url && <Text testID="website_url">{beerInfo.website_url}</Text>}
-      {beerInfo.name 
-        && <Button
-              title={isFavorite ? "Remove from Favorites": "Add to Favorites"}
-              onPress={async () => {
-                favoriteHandler()
-              }}>
-          </Button>
+    <StyledView className="my-5">
+      {beerInfo.name && 
+        <StyledText testID="name"
+          numberOfLines={3}
+          className="text-white font-bold text-center my-3 text-2xl">
+            {beerInfo.name}
+        </StyledText>}
+      <StyledView
+        className="flex-row justify-around my-5">
+        {beerInfo.brewery_type && 
+        <StyledText testID="brewery_type"
+          className="text-white font-semibold text-xl text-center">
+              Type: {beerInfo.brewery_type}</StyledText>
       }
-    </View>
+      {beerInfo.name && renderButton()}
+      </StyledView>
+      <StyledView className="place-items-center w-80 p-5 m-2">
+        <ContactView 
+          contactLabel="Located In:"
+          contactText={renderLocation(beerInfo)}
+          horizontalColor={themes.horizontal.first}>
+      </ContactView> 
+      {beerInfo.phone && <ContactView
+        horizontalColor={themes.horizontal.second}
+        contactLabel="Phone"
+        contactText={beerInfo.phone}>
+      </ContactView> }
+      {beerInfo.website_url && <ContactView 
+        horizontalColor={themes.horizontal.third}
+        contactLabel="Website"
+        contactText={beerInfo.website_url}>
+      </ContactView>}
+      </StyledView>
+    </StyledView>
     )
   }
 
   return (
-    <View>
+    <StyledView className="flex-1 place-content-center w-full bg-gray-900">
     {error 
       ? <ErrorDisplayer errorMessage={error}></ErrorDisplayer>
       : (loading 
         ? <Loading></Loading>
         : showInfo(fetchedBeer))
     }
-    </View>
+    </StyledView>
   )
 }
 

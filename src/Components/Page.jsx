@@ -7,6 +7,12 @@ import Search from "./Search"
 import utils from "../services/utils"
 import { RefreshControl } from "react-native"
 import PaginationButtons from "./PaginationButtons"
+import themes from "../../themes"
+import { styled } from "nativewind"
+
+const StyledView = styled(View)
+const StyledText = styled(Text)
+
 
 const Page = ({
   brewerys,
@@ -70,7 +76,9 @@ const Page = ({
   }
 
   const renderEmpty = () => {
-    return <Text>No Results</Text>
+    return <StyledText
+      className="text-white text-center text-3xl"
+    >No Results</StyledText>
   }
 
   const handleRefresh = () =>{
@@ -81,65 +89,54 @@ const Page = ({
   const showContent = () =>{
     return (
       <>
-      <SafeAreaView>
-        <View>
+      <SafeAreaView className="flex-1 content-center">
+        <View className="bg-gray-900">
           <Search
             updateSearch={(element)=> setFilter(element)}
             searchOption={searchOption}
             updateOption={setSearchOption}>
           </Search>
         </View>
-        <FlatList
-          data={brewerys}
-          testID="beer-list"
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          ListEmptyComponent={renderEmpty}
-          windowSize={10}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh}></RefreshControl>
-          }>
-        </FlatList>
-        <View style={styles.paginationConteiner}>
-          <PaginationButtons
-          current={currentPage}
-          range={2}
-          onPressButton={
-            (pageNumber)=>{setCurrentPage(pageNumber)}
-          }
-          lastPage = {lastPage}>
-          </PaginationButtons>
-        </View>
+          <FlatList
+            data={brewerys}
+            testID="beer-list"
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            ListEmptyComponent={renderEmpty}
+            windowSize={10}
+            className="w-full self-center p-3 bg-gray-900"
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={handleRefresh}></RefreshControl>
+            }>
+          </FlatList>
+          <StyledView 
+            className="flex-row justify-center items-center py-2 bg-gray-900">
+              <PaginationButtons
+                current={currentPage}
+                range={2}
+                onPressButton={
+                  (pageNumber)=>{setCurrentPage(pageNumber)}
+                }
+                lastPage = {lastPage}>
+              </PaginationButtons>
+          </StyledView>
       </SafeAreaView>
       </>
     )
   }
  
-  return (
-    <View style={styles.container}>
+
+return (
+    <StyledView className={`flex-1 place-content-center w-full`}>
       {loading
         ? <Loading></Loading>
         : !error && showContent()
       }
       {error && <ErrorDisplayer errorMessage={error}></ErrorDisplayer>}
       <StatusBar style="auto" />
-    </View>
+    </StyledView>
   );
+
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  paginationConteiner:{
-    flexDirection:'row',
-    justifyContent:'center',
-    alignItems:'center',
-    paddingVertical: 8,
-    backgroundColor:'transparent',
-  },
-});
 
 export default Page

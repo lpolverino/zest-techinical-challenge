@@ -1,4 +1,8 @@
-import { StyleSheet, TouchableOpacity, Text } from "react-native"
+import { StyleSheet, TouchableOpacity, Text, View } from "react-native"
+import themes from "../../themes"
+import { styled } from "nativewind"
+
+const StyledText = styled(Text)
 
 const PaginationButtons = ({
   current,
@@ -20,23 +24,31 @@ const PaginationButtons = ({
 
   if(current + range < lastPage) pages.push(lastPage)
 
+  const buttonTextStyle = (pageNumber) => {
+   const style = "text-bold " + (pageNumber === current ? "text-xl" : "")
+   return style
+  } 
+
   const showBUttons = () =>{
     return (
-      pages.map((page) =>
+      pages.map((page) => 
         <TouchableOpacity
           key={page}
           testID="page-button"
           onPress={()=>onPressButton(page)}
           style={[
-            styles.paginationButtons,
-            page === current ? styles.activeButton: null
+              styles.paginationButtons,
+              page=== 1 || page === lastPage ? styles.lastButtons : null,
+              page === current ? styles.activeButton: null
           ]}>
-            <Text>{page}</Text>
+            <StyledText
+              className={buttonTextStyle(page)}>
+                {page}
+            </StyledText>
         </TouchableOpacity>
       )
     )
   }
-
   return (
     <>
       {startPage !== endPage && showBUttons() }
@@ -52,15 +64,18 @@ const styles = StyleSheet.create({
     height:32,
     borderRadius:20,
     marginHorizontal:4,
-    backgroundColor:'grey',
-    color:'balck'
+    backgroundColor:themes.inaactivePage.bgColor,
+    color:'black',
   },
   activeButton:{
-    backgroundColor:'yellow',
+    backgroundColor:themes.activePage.bgColor,
     width:40,
     height:40,
     borderRadius:25,
   },
+  lastButtons:{
+    backgroundColor:themes.inaactivePage.lastPageBgColor
+  }
 })
 
 export default PaginationButtons
