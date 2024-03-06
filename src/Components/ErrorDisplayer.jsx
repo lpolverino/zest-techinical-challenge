@@ -13,7 +13,7 @@ const ErrorDisplayer = ({errorMessage}) => {
         <MaterialIcons
           name="error"
           size={themes.app.errorSize}
-          color="red">
+          color={themes.app.errorColor}>
         </MaterialIcons>
       </StyledView> 
       <StyledText className="self-center text-center text-3xl text-white"> Something Happend </StyledText>

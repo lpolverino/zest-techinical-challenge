@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, StatusBar, FlatList, SafeAreaView} from "react-native"
+import { View, Text, StatusBar, FlatList, SafeAreaView} from "react-native"
 import { useState,useEffect } from "react"
 import Loading from "./Loading"
 import ErrorDisplayer from "./ErrorDisplayer"
@@ -7,7 +7,6 @@ import Search from "./Search"
 import utils from "../services/utils"
 import { RefreshControl } from "react-native"
 import PaginationButtons from "./PaginationButtons"
-import themes from "../../themes"
 import { styled } from "nativewind"
 
 const StyledView = styled(View)
@@ -127,7 +126,7 @@ const Page = ({
  
 
 return (
-    <StyledView className={`flex-1 place-content-center w-full`}>
+    <StyledView className={`flex-1 place-content-center w-full bg-gray-900`}>
       {loading
         ? <Loading></Loading>
         : !error && showContent()
@@ -136,6 +135,7 @@ return (
       <StatusBar style="auto" />
     </StyledView>
   );
+
 
 }
 

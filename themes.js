@@ -18,22 +18,12 @@ const themes = {
     textSize:25,
   },
   app:{
-    bgColor:"bg-gray-100",
     errorSize: 70,
+    errorColor:"red",
     activityIndicatorColor:pallete.red,
-  },
-  searchSwitch:{
-    trackColor:"#767577",
-    thumbColor:pallete.oragne,
   },
   textColor:{
     red:pallete.red
-  },
-  cardsConteiner:{
-    bgColor:"bg-gray-[#9CA3AF]",
-  },
-  card:{
-    bgColor:"bg-white",
   },
   activePage: {
     bgColor:pallete.red
@@ -49,6 +39,25 @@ const themes = {
     first:pallete.red,
     second:pallete.oragne,
     third: pallete.yellow,
+  },
+  paginationButtons:{
+    justifyContent:'center',
+    alignItems:'center',
+    width:32,
+    height:32,
+    borderRadius:20,
+    marginHorizontal:4,
+    backgroundColor:pallete.oragne,
+    color:'black',
+  },
+  activeButton:{
+    backgroundColor:pallete.red,
+    width:40,
+    height:40,
+    borderRadius:25,
+  },
+  lastButtons:{
+    backgroundColor:pallete.yellow
   }
 
 }
