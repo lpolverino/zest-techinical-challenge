@@ -5,7 +5,7 @@ import deviceStorage from './src/services/deviceStorage';
 import apiHandler from './src/services/apiHandler';
 
 import Tabs from "./src/Components/Tabs"
-import BeerInfo from './src/Screens/BeerInfo';
+import BreweryInfo from './src/Screens/BreweryInfo';
 
 export default function App() {
   const [brewerys, setBrewerys] = useState([])
@@ -62,14 +62,14 @@ export default function App() {
             </Tabs>}
           </Stack.Screen>
           <Stack.Screen name='Info'>
-            {(props) => <BeerInfo
+            {(props) => <BreweryInfo
               {...props}
               fetchBrewery={tabsApi["BreweryDB"].getOneById}
               isInFavorites={isInFavorites}
               addFavorite={addFavorite}
               deleteFavorite={deleteFavorite}
               getBrewery={getBrewery}>
-            </BeerInfo>}
+            </BreweryInfo>}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

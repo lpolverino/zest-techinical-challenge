@@ -33,6 +33,8 @@ describe("BreweryItem Component tests", () =>{
       renderBreweryItem(mockBeer);
       expect(screen.getByTestId("name")).toBeDefined();
       expect(screen.getByTestId("city")).toBeDefined();
+      expect(screen.getByText(mockBeer.name)).toBeDefined();
+      expect(screen.getByText("City: " + mockBeer.city )).toBeDefined();
     })
 
     it("should not render error message if the beer is undefined", () =>{

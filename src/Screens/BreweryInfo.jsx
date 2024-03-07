@@ -6,29 +6,12 @@ import utils from "../services/utils"
 import { styled } from "nativewind"
 import { FontAwesome } from "@expo/vector-icons"
 import themes from "../../themes"
+import ContactView from "../Components/ContactView"
 
 const StyledText = styled(Text)
 const StyledView = styled(View)
 
-const ContactText = ({text}) =>{
-  return (text && <StyledText
-    className="text-white text-xl text-left m-1"
-    >{text}
-  </StyledText>);
-}
-
-const ContactView = ({contactLabel, contactText, horizontalColor}) => {
-  return <StyledView className="my-4">
-    <ContactText text={contactLabel}> </ContactText>
-    <View style={{
-      borderBottomColor: horizontalColor,
-      borderBottomWidth:6
-    }}></View>
-    <ContactText text={contactText}></ContactText>
-  </StyledView>
-}
-
-const BeerInfo = ({
+const BreweryInfo = ({
   route,
   fetchBrewery,
   isInFavorites,
@@ -51,11 +34,11 @@ const BeerInfo = ({
         utils.handleError(e,"Could't get Brewery", setError)
       }
       finally{
-        setLoading(false)
+        //setLoading(false)
       }
     }
     
-    if(!route) return setError("Beer not found")
+    if(!route) return setError("Brewery not found")
     
     const cachedBrewery = getBrewery(route.params.id)
     if(!cachedBrewery)
@@ -70,7 +53,7 @@ const BeerInfo = ({
         const isFavorite = await isInFavorites(fetchedBeer.id)
         setIsFavorite(isFavorite)
       }catch(e){
-        utils.handleError(e, "Cannot verify if the brewery is in favorites", setError)
+        utils.handleError(e, "Cannot verify if the brewery is in favourites", setError)
       }finally{
         setLoading(false)
       }
@@ -95,26 +78,26 @@ const BeerInfo = ({
       setIsFavorite(prevState => !prevState)
     }
     
-    const renderButton = () => {
-      return <Pressable 
-        className="w-10 h-10"
-        onPress={async ()=>favoriteHandler()}>
-          {
-            isFavorite 
-              ?<FontAwesome name="star-o" size={32} color={themes.favStar.color}> </FontAwesome>
-              :<FontAwesome name="star" size={32} color={themes.favStar.color}></FontAwesome>
-          }
-      </Pressable>
-    }
+  const renderButton = () => {
+    return <Pressable 
+      className="w-10 h-10"
+      onPress={async ()=>favoriteHandler()}>
+        {
+          isFavorite 
+            ?<FontAwesome name="star-o" size={32} color={themes.favStar.color} testID="remove"> </FontAwesome>
+            :<FontAwesome name="star" size={32} color={themes.favStar.color} testID="add"></FontAwesome>
+        }
+    </Pressable>
+  }
 
-    const renderLocation = (brewery) => {
-      if (!brewery.street || !brewery.city || !brewery.state || !brewery.country)
-        return "cannot get full address"
-
-      return "" + brewery.street + 
-            ", " + brewery.city + 
-            ", " + brewery.state + 
-            ", " + brewery.country + (brewery.postal_code ?` (${brewery.postal_code})`:"")
+  const renderLocation = (brewery) => {
+    if (!brewery.street || !brewery.city || !brewery.state || !brewery.country)
+      return "cannot get full address"
+    return "" + brewery.street + 
+      ", " + brewery.city + 
+      ", " + brewery.state + 
+      ", " + brewery.country + 
+      (brewery.postal_code ?` (${brewery.postal_code})`:"")
     }
 
   const showInfo = (beerInfo) => {
@@ -136,12 +119,14 @@ const BeerInfo = ({
       {beerInfo.name && renderButton()}
       </StyledView>
       <StyledView className="place-items-center w-80 p-5 m-2">
-        <ContactView 
+        <ContactView
+          testID="location" 
           contactLabel="Located In:"
           contactText={renderLocation(beerInfo)}
           horizontalColor={themes.horizontal.first}>
       </ContactView> 
       {beerInfo.phone && <ContactView
+        testID="phone"
         horizontalColor={themes.horizontal.second}
         contactLabel="Phone"
         contactText={beerInfo.phone}>
@@ -168,4 +153,4 @@ const BeerInfo = ({
   )
 }
 
-export default BeerInfo
+export default BreweryInfo

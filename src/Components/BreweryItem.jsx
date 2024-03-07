@@ -5,7 +5,6 @@ const StyledView = styled(View)
 const StyledText = styled(Text)
 
 const BreweryItem = ({brewery, onPressHandler}) => {
-  console.log(brewery);
   if (!brewery || !brewery.city || !brewery.name || brewery.name === '' || brewery.city === '') 
     return <Text>Cannot display brewery</Text>
   return (

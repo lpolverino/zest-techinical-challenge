@@ -17,7 +17,6 @@ const Search = ({updateSearch, searchOption, updateOption}) => {
   }, [updateSearch]);
 
   const toggleOption = () => {
-
     const newOption = searchOption === "name" ? "city" : "name"
     updateOption(newOption)
   }

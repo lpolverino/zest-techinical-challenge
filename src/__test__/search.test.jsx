@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor, act } from '@testing-library/react-native'
+import { fireEvent, render, screen, act } from '@testing-library/react-native'
 import Search from "../Components/Search"
 import utils from '../services/utils';
 
@@ -16,23 +16,19 @@ describe("Search Component tests", () =>{
   }
   
   describe("Render test", () => {
-  
-    const assertCorrectElementsRendered = async  (inputTestID, buttonText) =>{
-      await waitFor(()=> expect(screen.getByTestId(inputTestID)).toBeDefined());
-      await waitFor(()=> expect(screen.getByRole("button",{name:buttonText})).toBeDefined());
-    }
 
-    it("when entered the screen should display the name search and a button for toggling the search parameter", () => {
+    it("when entered the screen should display search text Input setted in city and the two buttons for toggling the search parameter", () => {
       renderSearch(()=>{}, "name", ()=>{})
-      expect(screen.getByText("Search By:")).toBeDefined();
-      assertCorrectElementsRendered("name", "By City")
+      expect(screen.getByText("Search")).toBeDefined();
+      expect(screen.getByText("NAME")).toBeDefined();
+      expect(screen.getByText("CITY")).toBeDefined();
+      expect(screen.getByTestId("name")).toBeDefined();
     });
     
     it("when button is pressed should call the change option handler", async () =>{
-      
       const mockFunction = jest.fn()
       renderSearch(()=>{}, "name", mockFunction)
-      await act( async() => fireEvent.press(screen.getByRole("button")));
+      await act( async() => fireEvent.press(screen.getByText("CITY")));
       expect(mockFunction).toHaveBeenCalled();
       expect(mockFunction.mock.calls[0][0]).toEqual("city")
     });
@@ -46,22 +42,21 @@ describe("Search Component tests", () =>{
       expect(mockHandler).not.toHaveBeenCalled()
     });
 
-    it("When typing in Name should call the handler with the correct arguments", async () => {
+    const renderSearchAndAssertChangeTextSendTheCorrectsArgumentsFor = async (searchOption, argument) => {
       const mockHandler = jest.fn();
-      renderSearch(mockHandler, "name", ()=>{});
-      await act(() => fireEvent.changeText(screen.getByTestId("name"), "beername1"));
-      await delay(1000)
+      renderSearch(mockHandler, searchOption, ()=>{})
+      await act (async() => fireEvent.changeText(screen.getByTestId(searchOption),argument));
+      await delay(1000);
       expect(mockHandler).toHaveBeenCalled();
-      expect(mockHandler.mock.calls[0][0]).toEqual('beername1');
+      expect(mockHandler.mock.calls[0][0]).toEqual(argument)
+    }
+
+    it("When typing in Name should call the handler with the correct arguments", async () => {
+      await renderSearchAndAssertChangeTextSendTheCorrectsArgumentsFor("name", "breweryName1");
     });
 
     it("When typing in City should call the handler with the correct arguments", async () => {
-      const mockHandler = jest.fn();
-      renderSearch(mockHandler, "city", ()=>{});
-      await act( async () => fireEvent.changeText(screen.getByTestId("city"),"cityname1"));
-      await delay(1000)
-      expect(mockHandler).toHaveBeenCalled();
-      expect(mockHandler.mock.calls[0][0]).toEqual("cityname1");
+      await renderSearchAndAssertChangeTextSendTheCorrectsArgumentsFor("city", "cityName1");
     })
   });
 });
