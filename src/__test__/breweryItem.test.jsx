@@ -1,13 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
-import BeerItem from '../Components/BeerItem';
+import BreweryItem from '../Components/BreweryItem';
 
-describe("beerItem Component tests", () =>{
-  const renderBeerItem = (beer, onPressedHandler) => {
-
-    render(<BeerItem
-      beer={beer}
+describe("BreweryItem Component tests", () =>{
+  const renderBreweryItem = (brewery, onPressedHandler) => {
+    render(<BreweryItem
+      brewery={brewery}
       onPressHandler = {onPressedHandler}>
-    </BeerItem>);
+    </BreweryItem>);
 
     screen.debug();
   };
@@ -22,38 +21,38 @@ describe("beerItem Component tests", () =>{
     const assertThatThereIsNoNameAndCity = () => {
       expect(screen.queryByTestId("city")).toBeNull();
       expect(screen.queryByTestId("name")).toBeNull();
-      expect(screen.getByText("Cannot display beer")).toBeDefined()
+      expect(screen.getByText("Cannot display brewery")).toBeDefined()
     }
 
-    const renderBeerItemAndAssertThatNameAndCityAreNotDisplayed = (beerItem) => {
-      renderBeerItem(beerItem)
+    const renderBreweryAndAssertThatNameAndCityAreNotDisplayed = (breweryItem) => {
+      renderBreweryItem(breweryItem)
       assertThatThereIsNoNameAndCity(screen)
     }
 
     it("should render beer name and city", () => {      
-      renderBeerItem(mockBeer);
-      expect(screen.getByText(mockBeer.name)).toBeDefined();
-      expect(screen.getByText(mockBeer.city)).toBeDefined();
+      renderBreweryItem(mockBeer);
+      expect(screen.getByTestId("name")).toBeDefined();
+      expect(screen.getByTestId("city")).toBeDefined();
     })
 
     it("should not render error message if the beer is undefined", () =>{
-      renderBeerItemAndAssertThatNameAndCityAreNotDisplayed({undefined})
+      renderBreweryAndAssertThatNameAndCityAreNotDisplayed({undefined})
     });
 
     it("should not render if the city is undefined", () => {
-      renderBeerItemAndAssertThatNameAndCityAreNotDisplayed({...mockBeer, city:undefined});
+      renderBreweryAndAssertThatNameAndCityAreNotDisplayed({...mockBeer, city:undefined});
     })
 
     it("should not render if the name is undefined", () => {
-      renderBeerItemAndAssertThatNameAndCityAreNotDisplayed({...mockBeer, name:undefined});
+      renderBreweryAndAssertThatNameAndCityAreNotDisplayed({...mockBeer, name:undefined});
     });
 
     it("should not render if there is no name but there is a city", () => {
-      renderBeerItemAndAssertThatNameAndCityAreNotDisplayed({...mockBeer, name:''});
+      renderBreweryAndAssertThatNameAndCityAreNotDisplayed({...mockBeer, name:''});
     });
 
     it("should not render if there is no city but there is the name", () => {
-      renderBeerItemAndAssertThatNameAndCityAreNotDisplayed({...mockBeer, city:''});
+      renderBreweryAndAssertThatNameAndCityAreNotDisplayed({...mockBeer, city:''});
     });
 
   });
@@ -62,9 +61,9 @@ describe("beerItem Component tests", () =>{
     it("when item pressed should call prop function", async  () =>{
       const mockHandler = jest.fn()
 
-      renderBeerItem(mockBeer, mockHandler)
+      renderBreweryItem(mockBeer, mockHandler)
 
-      fireEvent.press(screen.getByTestId("beer-item"));
+      fireEvent.press(screen.getByTestId("brewery-item"));
 
       expect(mockHandler).toHaveBeenCalled();
 
@@ -73,9 +72,9 @@ describe("beerItem Component tests", () =>{
     it("When not rendering the beer the handler cannot be called", () => {
       const mockHandler = jest.fn()
 
-      renderBeerItem(undefined, mockHandler)
+      renderBreweryItem(undefined, mockHandler)
 
-      fireEvent.press(screen.getByText("Cannot display beer"));
+      fireEvent.press(screen.getByText("Cannot display brewery"));
 
       expect(mockHandler).not.toHaveBeenCalled()
     })
