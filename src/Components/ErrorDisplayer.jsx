@@ -1,10 +1,7 @@
-import { Text, View } from "react-native"
 import { MaterialIcons } from "@expo/vector-icons"
 import themes from "../../themes"
-import {styled} from "nativewind"
-
-const StyledView = styled(View)
-const StyledText = styled(Text)
+import StyledText from "./Styled/StyledText"
+import StyledView from "./Styled/StyledView"
 
 const ErrorDisplayer = ({errorMessage}) => {
   return (

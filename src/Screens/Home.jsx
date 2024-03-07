@@ -1,6 +1,6 @@
-import { View, StyleSheet } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import Page from "../Components/Page"
+import StyledView from "../Components/Styled/StyledView"
 
 const Home = ({brewerys, updateBrewerys, apiHandlers}) => {
   
@@ -20,7 +20,7 @@ const Home = ({brewerys, updateBrewerys, apiHandlers}) => {
   }
 
   return (
-    <View style={styles.container}>
+    <StyledView className="flex-1 place-items-center bg-gray-900">
       <Page
       brewerys={brewerys}
       updateBrewerys={updateBrewerys}
@@ -29,18 +29,8 @@ const Home = ({brewerys, updateBrewerys, apiHandlers}) => {
       passPage = {changeBrewerys}
       beerInfoHandler={(item)=>navigation.navigate('Info',{id:item.id})}>
       </Page>
-    </View>
+    </StyledView>
   )
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
-
 
 export default Home

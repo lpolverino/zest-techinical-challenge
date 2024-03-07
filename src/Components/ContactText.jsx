@@ -1,7 +1,4 @@
-import { Text } from "react-native";
-import {styled} from "nativewind"
-
-const StyledText = styled(Text)
+import StyledText from "./Styled/StyledText"
 
 const ContactText = ({text}) =>{
   return (text && <StyledText

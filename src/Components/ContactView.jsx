@@ -1,8 +1,6 @@
 import ContactText from "./ContactText"
 import { View } from "react-native"
-import {styled} from "nativewind"
-
-const StyledView = styled(View)
+import StyledView from "./Styled/StyledView"
 
 const ContactView = ({contactLabel, contactText, horizontalColor}) => {
   return <StyledView className="my-4">

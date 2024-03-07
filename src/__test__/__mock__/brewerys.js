@@ -54,4 +54,5 @@ export const mockData =[
       "state": "Wisconsin",
       "street": "8100 Washington Ave"
   }
-] 
+]
+ 

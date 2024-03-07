@@ -1,10 +1,11 @@
-import { Text, View } from "react-native"
+import { Text } from "react-native"
 import { TouchableOpacity } from "react-native"
+import StyledView from "./Styled/StyledView"
 
 const PressableText = ({text, onPress, textClassName, textColor}) => {
   return (
-    <View className="self-center">
-    <TouchableOpacity className="self-baseline" onPress={()=>onPress()}>
+    <StyledView className="self-end my-1">
+    <TouchableOpacity onPress={()=>onPress()}>
       <Text
         className={textClassName}
         style={{
@@ -12,7 +13,7 @@ const PressableText = ({text, onPress, textClassName, textColor}) => {
         }}
         >{text}</Text>
     </TouchableOpacity>
-    </View>
+    </StyledView>
   )
 }
 

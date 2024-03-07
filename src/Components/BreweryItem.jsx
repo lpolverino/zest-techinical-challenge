@@ -1,8 +1,6 @@
-import {View, Text, TouchableWithoutFeedback} from "react-native"
-import {styled} from "nativewind"
-
-const StyledView = styled(View)
-const StyledText = styled(Text)
+import { Text, TouchableWithoutFeedback} from "react-native"
+import StyledView from "./Styled/StyledView"
+import StyledText from "./Styled/StyledText"
 
 const BreweryItem = ({brewery, onPressHandler}) => {
   if (!brewery || !brewery.city || !brewery.name || brewery.name === '' || brewery.city === '') 

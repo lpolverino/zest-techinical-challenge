@@ -1,10 +1,8 @@
-import { ActivityIndicator, Text, View } from "react-native"
-import { styled } from "nativewind";
+import { ActivityIndicator} from "react-native"
 import themes from "../../themes";
 import { useEffect, useState } from "react";
-
-const StyledText = styled(Text)
-const StyledView = styled(View)
+import StyledText from "./Styled/StyledText";
+import StyledView from "./Styled/StyledView";
 
 const Loading = () => {
   const [dots, setdots] = useState("")

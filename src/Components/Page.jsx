@@ -1,17 +1,15 @@
-import { View, Text, StatusBar, FlatList, SafeAreaView} from "react-native"
+import { StatusBar, SafeAreaView} from "react-native"
 import { useState,useEffect } from "react"
 import Loading from "./Loading"
 import ErrorDisplayer from "./ErrorDisplayer"
-import BeerItem from "./BeerItem"
+import BreweryItem from "./BreweryItem"
 import Search from "./Search"
 import utils from "../services/utils"
 import { RefreshControl } from "react-native"
 import PaginationButtons from "./PaginationButtons"
-import { styled } from "nativewind"
-
-const StyledView = styled(View)
-const StyledText = styled(Text)
-
+import StyledText from "./Styled/StyledText"
+import StyledView from "./Styled/StyledView"
+import StyledFlatList from "./Styled/StyledFlatList"
 
 const Page = ({
   brewerys,
@@ -41,8 +39,12 @@ const Page = ({
     }
   }
 
+  const isValidBrewerys = () => { 
+    return brewerys && Array.isArray(brewerys)
+  }
+
   useEffect(()=>{
-    if (brewerys && brewerys.length === 0) 
+    if (isValidBrewerys() && brewerys.length === 0) 
       fetchNewData( async ()=>{
         const allBrewerys = await fetchBrewerysApi.getAll(currentPage)
         updateBrewerys(allBrewerys.data)
@@ -66,16 +68,18 @@ const Page = ({
     });
   }, [currentPage])
 
+
   const renderItem = ({ item }) => {
-    return <BeerItem
-      testID="beer-item"
-      beer={item}
+    return <BreweryItem
+      testID="brewery-item"
+      brewery={item}
       onPressHandler={()=>beerInfoHandler(item)}
     />
   }
 
   const renderEmpty = () => {
     return <StyledText
+      testID="empty-list"
       className="text-white text-center text-3xl"
     >No Results</StyledText>
   }
@@ -89,26 +93,29 @@ const Page = ({
     return (
       <>
       <SafeAreaView className="flex-1 content-center">
-        <View className="bg-gray-900">
+        <StyledView className="bg-gray-900">
           <Search
             updateSearch={(element)=> setFilter(element)}
             searchOption={searchOption}
             updateOption={setSearchOption}>
           </Search>
-        </View>
-          <FlatList
-            data={brewerys}
-            testID="beer-list"
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-            ListEmptyComponent={renderEmpty}
-            windowSize={10}
-            className="w-full self-center p-3 bg-gray-900"
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={handleRefresh}></RefreshControl>
-            }>
-          </FlatList>
-          <StyledView 
+        </StyledView>
+          {isValidBrewerys(brewerys) ? 
+            <StyledFlatList
+              data={brewerys}
+              testID="beer-list"
+              renderItem={renderItem}
+              keyExtractor={item => item.id}
+              ListEmptyComponent={renderEmpty}
+              windowSize={10}
+              className="w-full self-center p-3 bg-gray-900"
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={handleRefresh}></RefreshControl>
+              }>
+            </StyledFlatList>
+            : renderEmpty()}
+          <StyledView
+            testID="pages-buttons" 
             className="flex-row justify-center items-center py-2 bg-gray-900">
               <PaginationButtons
                 current={currentPage}

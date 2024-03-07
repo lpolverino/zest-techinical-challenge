@@ -6,9 +6,6 @@ import BreweryInfo from "../Screens/BreweryInfo";
 const delay = utils.delay
 const mockBeer = mockData[0]
 
-jest.mock("../services/apiHandler")
-jest.mock("../services/deviceStorage")
-
 const fetchingError = "Could't get Brewery"
 const notFoundError = "Brewery not found"
 const findFavoriteStatusError = "Cannot verify if the brewery is in favourites"

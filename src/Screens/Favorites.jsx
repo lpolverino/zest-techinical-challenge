@@ -1,6 +1,6 @@
-import { StyleSheet, View } from "react-native"
 import Page from "../Components/Page";
 import { useNavigation } from "@react-navigation/native";
+import StyledView from "../Components/Styled/StyledView";
 
 const Favorites = ({favorites, updateFavorites, apiHandlers}) => {
 
@@ -33,7 +33,7 @@ const Favorites = ({favorites, updateFavorites, apiHandlers}) => {
   }
   
   return (
-    <View style={styles.container}>
+    <StyledView className="flex-1 place-items-center bg-gray-900">
       <Page
         brewerys={favorites}
         updateBrewerys={updateFavorites}
@@ -41,17 +41,8 @@ const Favorites = ({favorites, updateFavorites, apiHandlers}) => {
         updateFilters={updateFilters}
         beerInfoHandler={(item)=>navigation.navigate('Info', {id:item.id})}>
       </Page>
-    </View>
+    </StyledView>
     )
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
 
 export default Favorites

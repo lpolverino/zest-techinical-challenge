@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react"
-import { Pressable, Text, View} from "react-native"
+import { Pressable } from "react-native"
 import Loading from "../Components/Loading"
 import ErrorDisplayer from "../Components/ErrorDisplayer"
 import utils from "../services/utils"
-import { styled } from "nativewind"
 import { FontAwesome } from "@expo/vector-icons"
 import themes from "../../themes"
 import ContactView from "../Components/ContactView"
-
-const StyledText = styled(Text)
-const StyledView = styled(View)
+import StyledText from "../Components/Styled/StyledText"
+import StyledView from "../Components/Styled/StyledView"
 
 const BreweryInfo = ({
   route,
@@ -28,13 +26,10 @@ const BreweryInfo = ({
   useEffect(()=>{
     const getBeer = async () =>{
       try{
-        const beerinfo = await fetchBrewery(route.params.id)
-        setFetchedBeer(beerinfo)        
+        const breweryInfo = await fetchBrewery(route.params.id)
+        setFetchedBeer(breweryInfo)        
       }catch(e){
         utils.handleError(e,"Could't get Brewery", setError)
-      }
-      finally{
-        //setLoading(false)
       }
     }
     
@@ -84,8 +79,8 @@ const BreweryInfo = ({
       onPress={async ()=>favoriteHandler()}>
         {
           isFavorite 
-            ?<FontAwesome name="star-o" size={32} color={themes.favStar.color} testID="remove"> </FontAwesome>
-            :<FontAwesome name="star" size={32} color={themes.favStar.color} testID="add"></FontAwesome>
+            ?<FontAwesome name="star" size={32} color={themes.favStar.color} testID="remove"> </FontAwesome>
+            :<FontAwesome name="star-o" size={32} color={themes.favStar.color} testID="add"></FontAwesome>
         }
     </Pressable>
   }

@@ -1,8 +1,6 @@
-import { StyleSheet, TouchableOpacity, Text } from "react-native"
+import { StyleSheet, TouchableOpacity} from "react-native"
 import themes from "../../themes"
-import { styled } from "nativewind"
-
-const StyledText = styled(Text)
+import StyledText from "./Styled/StyledText"
 
 const PaginationButtons = ({
   current,

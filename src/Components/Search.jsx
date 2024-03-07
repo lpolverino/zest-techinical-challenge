@@ -1,8 +1,10 @@
-import { Text, TextInput, View} from "react-native"
+import { TextInput, View} from "react-native"
 import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
 import themes from "../../themes";
 import PressableText from "./PressableText";
+import StyledText from "./Styled/StyledText";
+import StyledView from "./Styled/StyledView";
 
 const Search = ({updateSearch, searchOption, updateOption}) => {
   const [searhValue, setSearchValue] = useState('')
@@ -32,10 +34,10 @@ const Search = ({updateSearch, searchOption, updateOption}) => {
   }
   
   return (
-    <View className="justify-center">
-      <Text className="self-center text-2xl my-1 text-white">Search</Text>
-      <View className="justify-center">
-        <View className="">
+    <StyledView className="justify-center my-1">
+      <StyledText className="self-center text-2xl my-1 text-white">Search</StyledText>
+      <StyledView className="justify-center">
+        <View>
           <TextInput
           value={searhValue}
           className="w-4/5 self-center bg-gray-50 block text-gray-700 border rounded py-1 px-3
@@ -47,7 +49,7 @@ const Search = ({updateSearch, searchOption, updateOption}) => {
           }}
           testID={searchOption}>
           </TextInput>
-          <View className="my-1 flex-row justify-evenly">
+          <StyledView className="my-1 flex-row justify-evenly">
             <PressableText
               text="NAME"
               onPress={()=> searchOption==="city" && toggleOption()}
@@ -62,10 +64,10 @@ const Search = ({updateSearch, searchOption, updateOption}) => {
               textClassName={`self-center text-xl font-bold`}
               textColor={getColorFor("city")}>
             </PressableText>
-          </View>
+          </StyledView>
         </View>
-      </View>
-    </View>
+      </StyledView>
+    </StyledView>
   )
 }
 
