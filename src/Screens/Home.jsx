@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native"
 import Page from "../Components/Page"
 import StyledView from "../Components/Styled/StyledView"
+import utils from "../services/utils"
 
 const Home = ({brewerys, updateBrewerys, apiHandlers}) => {
   
@@ -26,6 +27,7 @@ const Home = ({brewerys, updateBrewerys, apiHandlers}) => {
       brewerys={brewerys}
       updateBrewerys={updateBrewerys}
       fetchBrewerysApi={apiHandlers}
+      searchOptions={utils.filterOptions}
       updateFilters={changeBrewerys}
       passPage = {changeBrewerys}
       beerInfoHandler={(item)=>navigation.navigate('Info',{id:item.id})}>

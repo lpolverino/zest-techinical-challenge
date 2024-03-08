@@ -1,6 +1,7 @@
 import Page from "../Components/Page";
 import { useNavigation } from "@react-navigation/native";
 import StyledView from "../Components/Styled/StyledView";
+import utils from "../services/utils";
 
 const Favorites = ({favorites, updateFavorites, apiHandlers}) => {
 
@@ -40,6 +41,7 @@ const Favorites = ({favorites, updateFavorites, apiHandlers}) => {
         updateBrewerys={updateFavorites}
         fetchBrewerysApi={apiHandlers}
         updateFilters={updateFilters}
+        searchOptions={utils.filterOptions}
         beerInfoHandler={(item)=>navigation.navigate('Info', {id:item.id})}>
       </Page>
     </StyledView>

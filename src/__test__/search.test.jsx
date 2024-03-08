@@ -11,6 +11,7 @@ describe("Search Component tests", () =>{
    render(<Search
             updateSearch={updateSearchHandler}
             searchOption={option}
+            searchOptions={utils.filterOptions}
             updateOption={optionChangeHandler}>  
           </Search>)
   }

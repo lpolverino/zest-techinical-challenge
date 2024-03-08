@@ -18,6 +18,7 @@ const Page = ({
   updateFilters,
   beerInfoHandler,
   passPage,
+  searchOptions
 }) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -97,6 +98,7 @@ const Page = ({
           <Search
             updateSearch={(element)=> setFilter(element)}
             searchOption={searchOption}
+            searchOptions={searchOptions}
             updateOption={setSearchOption}>
           </Search>
         </StyledView>

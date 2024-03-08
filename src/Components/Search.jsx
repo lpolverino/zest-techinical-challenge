@@ -5,9 +5,8 @@ import themes from "../../themes";
 import SearchButton from "./SearchButton";
 import StyledText from "./Styled/StyledText";
 import StyledView from "./Styled/StyledView";
-import utils from "../services/utils";
 
-const Search = ({updateSearch, searchOption, updateOption}) => {
+const Search = ({updateSearch, searchOption, updateOption, searchOptions}) => {
   const [searhValue, setSearchValue] = useState('')
 
   const handleTextChange = (newText) => {
@@ -53,7 +52,7 @@ const Search = ({updateSearch, searchOption, updateOption}) => {
           <StyledView className="my-1 flex-row justify-evenly">
             <FlatList
               contentContainerStyle={styles.optionList}
-              data={utils.filterOptions}
+              data={searchOptions}
               keyExtractor={(item)=> item }
               renderItem={({item})=><SearchButton
                 text={item.toUpperCase()}

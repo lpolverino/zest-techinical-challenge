@@ -4,6 +4,7 @@ import utils from '../services/utils';
 import { mockData } from "./__mock__/brewerys"
 
 const delay = utils.delay
+const searchOptions = utils.filterOptions
 const fetchingError = "Could't get Brewerys"
 
 const emptyFn = () =>{}
@@ -15,6 +16,7 @@ const renderPage = async (brewerys, updateBrewerys, fetchBrewerysApi, updateFIlt
       fetchBrewerysApi={fetchBrewerysApi}
       updateFilters={updateFIlters}
       passPage={passPage}
+      searchOptions={searchOptions}
       beerInfoHandler={beerInfoHandler}
   ></Page>))
 }
@@ -61,7 +63,9 @@ describe("Home Screen Componen test", () =>{
       const mockFetchHandler = jest.fn(async () => { return {data:mockData}})
      
       const { rerender } = await waitFor(async () =>  render(<Page brewerys={[]}
-      updateBrewerys={()=>{}} fetchBrewerysApi={{getAll:mockFetchHandler}} updateFilters={emptyFn} beerInfoHandler={emptyFn} passPage={emptyFn}></Page>))
+      updateBrewerys={()=>{}} fetchBrewerysApi={{getAll:mockFetchHandler}}
+      searchOptions={searchOptions}
+      updateFilters={emptyFn} beerInfoHandler={emptyFn} passPage={emptyFn}></Page>))
       
       rerender(<Page> </Page>)
       
@@ -74,7 +78,6 @@ describe("Home Screen Componen test", () =>{
     it("when pressing filter button should change the searchoption and call the handler", async ()=>{
       const mockHandler = jest.fn()
       await renderPage(mockData, emptyFn, {getAll:emptyFn}, mockHandler , emptyFn, emptyFn)
-    
       await act( async () => fireEvent.press(screen.getByText("CITY")))
       expect(mockHandler).toHaveBeenCalledTimes(2)
       expect(mockHandler.mock.calls[1][0]).toEqual("")
