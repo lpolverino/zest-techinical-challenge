@@ -18,11 +18,17 @@ function handleError(error, errorMessage, setError) {
   setError(errorMessage)
 }
 
+const filterOptions = [
+  "name",
+  "city"
+]
+
 export default {
   delay,
   parseToUnderscores,
   pageOffset,
   getLastPage,
-  handleError
+  handleError,
+  filterOptions,
 }
 

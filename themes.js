@@ -58,8 +58,12 @@ const themes = {
   },
   lastButtons:{
     backgroundColor:pallete.yellow
+  },
+  searchButtons:{
+    flexDirection:"row",
+    justifyContent:"space-evenly",
   }
-
+  
 }
 
 export default themes 

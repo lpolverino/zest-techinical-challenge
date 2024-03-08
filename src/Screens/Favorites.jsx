@@ -16,6 +16,7 @@ const Favorites = ({favorites, updateFavorites, apiHandlers}) => {
     );
   }
   const updateFilters = async (search, type) => {
+    // for better scalability we can check if the  type is in a array of options
     if( type !== "name" && type !== "city") throw new Error("Bad parameters")
     else {
     if( typeof search === 'string') {

@@ -1,10 +1,11 @@
-import { TextInput, View} from "react-native"
+import { TextInput, View, FlatList, StyleSheet} from "react-native"
 import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
 import themes from "../../themes";
-import PressableText from "./PressableText";
+import SearchButton from "./SearchButton";
 import StyledText from "./Styled/StyledText";
 import StyledView from "./Styled/StyledView";
+import utils from "../services/utils";
 
 const Search = ({updateSearch, searchOption, updateOption}) => {
   const [searhValue, setSearchValue] = useState('')
@@ -18,9 +19,9 @@ const Search = ({updateSearch, searchOption, updateOption}) => {
     return debounce(handleTextChange, 100);
   }, [updateSearch]);
 
-  const toggleOption = () => {
-    const newOption = searchOption === "name" ? "city" : "name"
-    updateOption(newOption)
+  const toggleOption = (item) => {
+    if(item === searchOption) return
+    updateOption(item)
   }
 
   useEffect(() => {
@@ -50,20 +51,17 @@ const Search = ({updateSearch, searchOption, updateOption}) => {
           testID={searchOption}>
           </TextInput>
           <StyledView className="my-1 flex-row justify-evenly">
-            <PressableText
-              text="NAME"
-              onPress={()=> searchOption==="city" && toggleOption()}
-              textClassName="text-xl font-bold"
-              textColor={getColorFor("name")}>
-            </PressableText>
-            <PressableText
-              text="CITY"
-              onPress={()=>{
-                searchOption ==="name" && toggleOption()
-              }}
-              textClassName={`self-center text-xl font-bold`}
-              textColor={getColorFor("city")}>
-            </PressableText>
+            <FlatList
+              contentContainerStyle={styles.optionList}
+              data={utils.filterOptions}
+              keyExtractor={(item)=> item }
+              renderItem={({item})=><SearchButton
+                text={item.toUpperCase()}
+                onPress={()=>{toggleOption(item)}}
+                textClassName="text-xl font-bold"
+                textColor={getColorFor(item)}></SearchButton>
+              }>
+            </FlatList>
           </StyledView>
         </View>
       </StyledView>
@@ -72,3 +70,7 @@ const Search = ({updateSearch, searchOption, updateOption}) => {
 }
 
 export default Search
+
+const styles = StyleSheet.create({
+  optionList:themes.searchButtons
+})

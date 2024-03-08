@@ -11,6 +11,7 @@ const Home = ({brewerys, updateBrewerys, apiHandlers}) => {
     if (search === ''){
       newBrewerys =  await apiHandlers.getAll(page)
     } else{
+      //for better scability with can have an array with options and call the correct handler for that option
       newBrewerys = type === "name"
         ? await apiHandlers.getAllByName(search,page)
         : await apiHandlers.getAllByCity(search,page)
